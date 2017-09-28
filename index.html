@@ -1,39 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="scriptApp">
 <head>
     <title>Script for dummies</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="angular.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="editor.js" type="text/javascript" charset="utf-8"></script>
 </head>
-<body>
-
-<div id="sqlEditor">CREATE PROCEDURE dbo.Test2  
-AS  
-    CREATE TABLE #t(x INT PRIMARY KEY);  
-    INSERT INTO #t VALUES (2);  
-    SELECT Test2Col = x FROM #t;  
-GO  
-
-CREATE PROCEDURE dbo.Test1  
-AS  
-    CREATE TABLE #t(x INT PRIMARY KEY);  
-    INSERT INTO #t VALUES (1);  
-    SELECT Test1Col = x FROM #t;  
-EXEC Test2;  
-GO  
-
-CREATE TABLE #t(x INT PRIMARY KEY);  
-INSERT INTO #t VALUES (99);  
-GO  
-
-EXEC Test1;  
-GO
-</div>
-    
-<script src="src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-<script>
-    var editor = ace.edit("sqlEditor");
-    editor.setTheme("ace/theme/monokai");
-    editor.getSession().setMode("ace/mode/sqlserver");
-</script>
+<body ng-controller="scriptCtrl as script">
+    <div id="sqlEditor" class="panel"></div>
+    <div class="panel">
+         <div>
+             <label>
+                 Name:
+                 <input ng-model="script.Name">
+             </label>
+         </div>
+         <div>
+             <label>
+                 Description:
+                 <input ng-model="script.Description">
+             </label>
+         </div>
+         <div>
+             Parameters:
+             <div>
+                 <button type="buttom" ng-click="script.addParameter()">Add New...</button>
+             </div>
+             <div class="parameters-container">
+                <div ng-repeat="parameter in script.parameters track by $index">
+                    <div>
+                        <label>
+                            Id:
+                            <input ng-model="parameter.id">
+                        </label>
+                    </div>
+                </div>
+             </div>
+         </div>
+     </div>
 </body>
 </html>

@@ -1,4 +1,11 @@
-    #sqlEditor { 
-        width: 600px;
-        height: 1200px;
-    }
+#sqlEditor { 
+    width: 600px;
+    height: 1200px;
+}
+
+.panel{
+    float: left;
+    display: inline-block;  
+    width: 200px;
+}
+
