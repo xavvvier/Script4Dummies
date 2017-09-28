@@ -7,7 +7,7 @@
     <script src="src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="editor.js" type="text/javascript" charset="utf-8"></script>
 </head>
-<body ng-controller="scriptCtrl as script">
+<body ng-controller="scriptCtrl">
     <div id="sqlEditor" class="panel"></div>
     <div class="panel">
          <div>
@@ -20,6 +20,12 @@
              <label>
                  Description:
                  <input ng-model="script.Description">
+             </label>
+         </div>
+         <div>
+             <label>
+                 Category:
+                 <input ng-model="script.Category">
              </label>
          </div>
          <div>
@@ -37,6 +43,10 @@
                     </div>
                 </div>
              </div>
+         </div>
+         <div style="margin-top: 200px">
+             <button type="button" ng-click="read()">Read</button>
+             <button type="button" ng-click="write()">Write</button>
          </div>
      </div>
      <div style="clear: both">
