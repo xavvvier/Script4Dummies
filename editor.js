@@ -1,63 +1,65 @@
 
 angular.module('scriptApp', [])
-    .controller('scriptCtrl', function ($scope) {
+.controller('scriptCtrl', function($scope){
 
-        $scope.Name = '';
-        $scope.Description = '';
-
-        $scope.parameterTypes = [
-            'acl',
-            'constant',
-            'sql',
-            'fields',
-            'search'
-        ];
-        $scope.dataTypes = ['Date', 'DateTime', 'Text', 'User', 'Number'];
-        $scope.typeartifactid = '';
-
-        $scope.parameters = [
-            // { parameterType: 'constant', id: 'initDate', name: 'Initial Date', dataType: 'Date' },
-            // { parameterType: 'constant', id: 'endDate', name: 'End Date' },
-            // { parameterType: 'constant', id: 'price', name: 'Product price', type: 'Number', precision: 2, scale: 10 },
-            // { parameterType: 'sql', id: 'endDate', name: 'End Date', sql: 'select top 10 ArtifactID from Artifact' }
-        ];
-
-        $scope.addParameter = function () {
-            $scope.parameters.push({});
-        };
-
-        $scope.clearParameters = function () {
-            $scope.parameters = [];
-        }
-
-        init();
-    });
-
-function init() {
     var editor = ace.edit("sqlEditor");
-    editor.setTheme("ace/theme/solarized_dark");
-    editor.getSession().setMode("ace/mode/sqlserver");
 
+    $scope.parameterTypes = ['constant', 'sql', 'search'];
+    $scope.dataTypes = ['Date', 'DateTime', ''];
 
-    var sqlScript = "CREATE PROCEDURE dbo.Test2 \n " +
-        " \n " +
-        "    CREATE TABLE #t(x INT PRIMARY KEY) \n " +
-        "    INSERT INTO #t VALUES (2 \n " +
-        "    SELECT Test2Col = x FROM # \n " +
-        " \n " +
-        "CREATE PROCEDURE dbo.Tes \n " +
-        " \n " +
-        "    CREATE TABLE #t(x INT PRIMARY KEY) \n " +
-        "    INSERT INTO #t VALUES (1 \n " +
-        "    SELECT Test1Col = x FROM # \n " +
-        "EXEC Test2 \n " +
-        " \n " +
-        "CREATE TABLE #t(x INT PRIMARY KEY) \n " +
-        "INSERT INTO #t VALUES (99) \n " +
-        "EXEC Test1 \n " +
-        "GO";
+    $scope.script = {
+        Name: '',
+        Description: '',
+        Category: '',
+        parameters: [
+            {id: 'initDate', name:'Initial Date', parameterType: 'constant' },
+            {id: 'endDate', name:'End Date', parameterType: 'constant'}
+        ]
+    };
 
-    editor.setValue(sqlScript);
-    editor.gotoLine(1);
+    $scope.addParameter = function(){
+        model.parameters.push({});
+    };
 
-}
+    $scope.read = function () {
+        var targetElement = document.getElementById('targetElement');
+        loadScript(targetElement, $scope.script);
+    };
+
+    $scope.init = function() {
+        editor.setTheme("ace/theme/solarized_dark");
+        editor.getSession().setMode("ace/mode/sqlserver");
+        //$scope.read();
+    }
+
+    $scope.init(); 
+
+    function loadScript(element, script){
+        var scriptDefinition = targetElement.value;
+        var parser = new DOMParser();
+        var xmlScript = parser.parseFromString(scriptDefinition, "text/xml");
+        var scriptNode = xmlScript.firstChild;
+
+        //Script Basic Properties
+        script.Name = nodeText(scriptNode.getElementsByTagName('name')[0]);
+        script.Description = nodeText(scriptNode.getElementsByTagName('description')[0]);
+        script.Category = nodeText(scriptNode.getElementsByTagName('category')[0]);
+
+        //Script parameters
+        var inputNode = xmlScript.getElementsByTagName('input')[0];
+        var parameterNodes = inputNode.children;
+        for (var i = 0, len = parameterNodes.length; i < len; i++) {
+            var parameterNode = parameterNodes[i];
+            console.log(parameterNode.nodeName);
+        }
+        var actionNode = scriptNode.getElementsByTagName('action')[0];
+        var sqlScript = actionNode.firstChild.wholeText;
+        editor.setValue(sqlScript);
+        editor.gotoLine(1);
+    }
+
+    function nodeText(node){
+        return node.firstChild.nodeValue;
+    }
+});
+

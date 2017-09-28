@@ -8,29 +8,34 @@
     <script src="src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="editor.js" type="text/javascript" charset="utf-8"></script>
 </head>
-
 <body ng-controller="scriptCtrl">
     <div id="sqlEditor" class="panel"></div>
     <div class="panel">
         <div>
             <label>
                  Name:
-                 <input ng-model="Name">
+                 <input ng-model="script.Name">
              </label>
         </div>
         <div>
             <label>
                  Description:
-                 <input ng-model="Description">
+                 <input ng-model="script.Description">
              </label>
-        </div>
-        <div>
-            Parameters:
-            <div>
-                <button type="buttom" ng-click="addParameter()">Add New...</button>
-            </div>
-            <div class="parameters-container">
-                <div class="parameter" ng-repeat="parameter in parameters track by $index">
+         </div>
+         <div>
+             <label>
+                 Category:
+                 <input ng-model="script.Category">
+             </label>
+         </div>
+         <div>
+             Parameters:
+             <div>
+                 <button type="buttom" ng-click="addParameter()">Add New...</button>
+             </div>
+             <div class="parameters-container">
+                <div class="parameter" ng-repeat="parameter in script.parameters track by $index">
                     <div>
                         <label>
                             Type:
@@ -41,8 +46,12 @@
                             Id:
                             <input ng-model="parameter.id">
                         </label>
+                        <label>
+                            Name:
+                            <input ng-model="parameter.name">
+                        </label>
                         <label ng-if="parameter.parameterType=='acl'">
-                            Artefact ID:
+                            Artifact ID:
                             <input ng-model="parameter.typeartifactid">
                         </label>
                         <label ng-if="parameter.parameterType=='constant'">
@@ -57,11 +66,64 @@
                     </div>
                     ------------------
                 </div>
-            </div>
-        </div>
-        <input type="button" value="Clear" ng-click="clearParameters()">
-        {{parameters | json}}
-    </div>
+             </div>
+         </div>
+         <div style="margin-top: 200px">
+             <button type="button" ng-click="read()">Read</button>
+             <button type="button" ng-click="write()">Write</button>
+         </div>
+     </div>
+     <div style="clear: both">
+         <textarea rows="20" cols="200" id="targetElement">
+ &lt;script&gt;
+&lt;name&gt;My script&lt;/name&gt;
+&lt;description&gt;This is an awesome script&lt;/description&gt;
+&lt;category&gt;Testing scripts&lt;/category&gt;
+  &lt;input&gt;
+    &lt;constant id="_year" name="Usage Period Year (YYYY)" type="number" /&gt;
+    &lt;constant id="_month" name="Usage Period Month (MM)" type="number" /&gt;
+    &lt;constant id="_replaceCase" name="Replace Case Name With Artifact ID" type="text"&gt;
+      &lt;option&gt;True&lt;/option&gt;
+      &lt;option&gt;False&lt;/option&gt;
+    &lt;/constant&gt;
+    &lt;field id="FIELD_PROPAGATE" name="Parent ID destination:"&gt;
+      &lt;filters&gt;
+        &lt;type&gt;0&lt;/type&gt;
+        &lt;type&gt;1&lt;/type&gt;
+      &lt;/filters&gt;
+    &lt;/field&gt;
+  &lt;/input&gt;
+  &lt;display type="itemlist"&gt;&lt;/display&gt;
+&lt;action returns="table"&gt;
+&lt;![CDATA[
+
+CREATE PROCEDURE dbo.Test2  
+AS  
+    CREATE TABLE #t(x INT PRIMARY KEY);  
+    INSERT INTO #t VALUES (2);  
+    SELECT Test2Col = x FROM #t;  
+GO  
+
+CREATE PROCEDURE dbo.Test1  
+AS  
+    CREATE TABLE #t(x INT PRIMARY KEY);  
+    INSERT INTO #t VALUES (1);  
+    SELECT Test1Col = x FROM #t;  
+EXEC Test2;  
+GO  
+
+CREATE TABLE #t(x INT PRIMARY KEY);  
+INSERT INTO #t VALUES (456);  
+GO  
+
+EXEC Test1;  
+GO
+
+]]&gt;
+&lt;/action&gt;
+&lt;/script&gt;
+         </textarea>
+     </div>
 </body>
 
 </html>
