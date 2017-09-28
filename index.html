@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="scriptApp">
+
 <head>
     <title>Script for dummies</title>
     <link rel="stylesheet" href="styles.css">
@@ -7,37 +8,60 @@
     <script src="src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="editor.js" type="text/javascript" charset="utf-8"></script>
 </head>
-<body ng-controller="scriptCtrl as script">
+
+<body ng-controller="scriptCtrl">
     <div id="sqlEditor" class="panel"></div>
     <div class="panel">
-         <div>
-             <label>
+        <div>
+            <label>
                  Name:
-                 <input ng-model="script.Name">
+                 <input ng-model="Name">
              </label>
-         </div>
-         <div>
-             <label>
+        </div>
+        <div>
+            <label>
                  Description:
-                 <input ng-model="script.Description">
+                 <input ng-model="Description">
              </label>
-         </div>
-         <div>
-             Parameters:
-             <div>
-                 <button type="buttom" ng-click="script.addParameter()">Add New...</button>
-             </div>
-             <div class="parameters-container">
-                <div ng-repeat="parameter in script.parameters track by $index">
+        </div>
+        <div>
+            Parameters:
+            <div>
+                <button type="buttom" ng-click="addParameter()">Add New...</button>
+            </div>
+            <div class="parameters-container">
+                <div class="parameter" ng-repeat="parameter in parameters track by $index">
                     <div>
+                        <label>
+                            Type:
+                            <select ng-options="type for type in parameterTypes" ng-model="parameter.parameterType">
+                            </select>
+                        </label>
                         <label>
                             Id:
                             <input ng-model="parameter.id">
                         </label>
+                        <label ng-if="parameter.parameterType=='acl'">
+                            Artefact ID:
+                            <input ng-model="parameter.typeartifactid">
+                        </label>
+                        <label ng-if="parameter.parameterType=='constant'">
+                            Data Type:
+                            <select ng-options="dt for dt in dataTypes" ng-model="parameter.dataType">
+                            </select>
+                        </label>
+                        <label ng-if="parameter.parameterType=='sql'">
+                            Sql:
+                            <input ng-model="parameter.sql">
+                        </label>
                     </div>
+                    ------------------
                 </div>
-             </div>
-         </div>
-     </div>
+            </div>
+        </div>
+        <input type="button" value="Clear" ng-click="clearParameters()">
+        {{parameters | json}}
+    </div>
 </body>
+
 </html>

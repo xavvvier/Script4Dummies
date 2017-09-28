@@ -1,6 +1,6 @@
 #sqlEditor { 
     width: 600px;
-    height: 1200px;
+    height: 400px;
 }
 
 .panel{
@@ -9,3 +9,8 @@
     width: 200px;
 }
 
+.parameter{
+    border: 1px solid gray;
+    border-radius: 3px;
+    margin: 5px;  
+}
