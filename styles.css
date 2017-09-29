@@ -141,7 +141,13 @@ br{
     border-bottom: thin solid #c1c1c1;
    content: "";
    display: block;
+   margin: 10px 0;
 }
+
+#_cardSecurity div:last-child br:last-child{
+    display: none;
+}
+
 .parameter-table{
     padding: 10px 0;
 }
