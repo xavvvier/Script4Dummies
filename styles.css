@@ -113,6 +113,10 @@ table {
     display: table;
 }
 
+.cardContainer label.no-bold{
+    font-weight: normal;
+}
+
 .dynamicEditFieldNameRequired {
     border-style: none solid none none!important;
     border-width: 4px!important;
