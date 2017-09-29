@@ -11,6 +11,12 @@
 </head>
 <body ng-controller="scriptCtrl">
     <div id="sqlEditor" class="panel"></div>
+    <div class="floating-editor" ng-show="openModal">
+        <div class="floating-container">
+            <div id="sqlParameterEditor"></div>
+            <a class="blue-button close-icon" ng-click="closeModal()">Close</a>
+        </div>
+    </div>
     <div class="panel">
         <fieldset>
             <legend>Action: </legend>
@@ -111,8 +117,11 @@
                         </label>
 
                         <label ng-if="parameter.parameterType=='sql'">
-                            Sql:
-                            <input ng-model="parameter.sql"/>
+                            <div>
+                                Sql:
+                                {{parameter.sql}}
+                            </div>
+                            <a class="blue-button" href="#" ng-click="openModalFor(parameter)">Edit sql ...</a>
                             <!-- <div id="sqlEditorParameter"></div> -->
                         </label>
 
@@ -224,6 +233,13 @@
        ID = [ArtifactID]
        FROM
        [View]
+  &lt;/sql&gt;
+      &lt;sql id="viewID3" name="Views3"&gt;
+       SELECT
+       Display = [Name],
+       ID = [ArtifactID]
+       FROM
+       [View3]
   &lt;/sql&gt;
   &lt;object id="Tab" name="Tab" displaytype="multipicker" typeartifactid="1035238" rdoviewartifactid="1034262" /&gt;
   &lt;/input&gt;

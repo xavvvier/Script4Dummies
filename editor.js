@@ -3,12 +3,15 @@ angular.module('scriptApp', [])
 .controller('scriptCtrl', function($scope){
 
     var editor = ace.edit("sqlEditor");
+    var parameterEditor = ace.edit("sqlParameterEditor");
     //var editorParameter = ace.edit("sqlEditorParameter");
 
     $scope.parameterTypes = ['constant', 'sql', 'field', 'search', 'searchprovider', 'object'];
     $scope.types = ['date', 'datetime', 'text', 'user', 'number', 'timezone'];
     $scope.returns = ['status', 'table'];
     $scope.displayTypes = ['report', 'table'];
+    $scope.openModal = false;
+    $scope.editingParameter = null;
 
     $scope.script = {
         action: {
@@ -41,6 +44,18 @@ angular.module('scriptApp', [])
         action: { },
         security: { },
         display: { }
+    };
+
+    $scope.closeModal = function (){
+        $scope.openModal=false;
+        $scope.editingParameter.sql = parameterEditor.getValue();
+    };
+
+    $scope.openModalFor = function (parameter){
+        $scope.editingParameter = parameter;
+        parameterEditor.setValue(parameter.sql);
+        parameterEditor.gotoLine(1);
+        $scope.openModal =true;
     };
 
     $scope.addParameter = function(){
@@ -87,6 +102,8 @@ angular.module('scriptApp', [])
     $scope.init = function() {
         editor.setTheme('ace/theme/sqlserver');
         editor.getSession().setMode("ace/mode/sqlserver");
+        parameterEditor.setTheme('ace/theme/sqlserver');
+        parameterEditor.getSession().setMode("ace/mode/sqlserver");
         $scope.read();
     }
 
