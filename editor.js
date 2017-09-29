@@ -12,6 +12,8 @@ angular.module('scriptApp', [])
         Name: '',
         Description: '',
         Category: '',
+        version: '',
+        key: '',
         parameters: [
             {id: 'initDate', name:'Initial Date', parameterType: 'constant', dataType: 'user', precision: '', required: true},
             {id: 'endDate', name:'End Date', parameterType: 'constant', dataType: 'number', option: [
@@ -86,13 +88,40 @@ angular.module('scriptApp', [])
         xw.writeElementString('name', script.Name);
         xw.writeElementString('description', script.Description);
         xw.writeElementString('category', script.Category);
+        if(script.key){
+            xw.writeElementString('key', script.key);
+        }
+        if(script.version){
+            xw.writeElementString('version', script.version);
+        }
         xw.writeStartElement('input');
-        console.log(script.parameters.length);
         for (var i = 0, len = script.parameters.length; i < len; i++) {
             var parameter = script.parameters[i];
             writeParameter(xw, parameter);
         }
         xw.writeEndElement();//input
+        xw.writeStartElement('display');
+        writeAttrIfNotNull(xw, 'type', script.display.type);
+        if(script.display.settings && script.display.settings.reporttitle){
+            xw.writeStartElement('settings');
+            xw.writeAttributeString('reporttitle', script.display.settings.reporttitle);
+            xw.writeEndElement();//settings
+        }
+        if(script.security && script.security.acl && script.security.acl.length){
+            xw.writeStartElement('security');
+            var acls = script.security.acl;
+            for (var i = 0, len = acls.length; i < len; i++) {
+                var acl = acls[i];
+                xw.writeStartElement('acl');
+                writeAttrIfNotNull(xw, 'id', acl.id);
+                writeAttrIfNotNull(xw, 'typeartifactid', acl.typeartifactid);
+                writeAttrIfNotNull(xw, 'typeartifactguid', acl.typeartifactguid);
+                writeAttrIfNotNull(xw, 'type', acl.type);
+                xw.writeEndElement();//acl
+            }
+            xw.writeEndElement();//security
+        }
+        xw.writeEndElement();//display
         xw.writeStartElement('action');
         xw.writeAttributeString('returns', script.action.returns);
         writeAttrIfNotNull(xw, 'timeout', script.action.timeout);
@@ -166,6 +195,8 @@ angular.module('scriptApp', [])
         script.Name = nodeText(scriptNode.getElementsByTagName('name')[0]);
         script.Description = nodeText(scriptNode.getElementsByTagName('description')[0]);
         script.Category = nodeText(scriptNode.getElementsByTagName('category')[0]);
+        script.key = nodeText(scriptNode.getElementsByTagName('key')[0]);
+        script.version = nodeText(scriptNode.getElementsByTagName('version')[0]);
         //Script parameters
         var inputNode = xmlScript.getElementsByTagName('input')[0];
         var parameterNodes = inputNode.children;
@@ -284,7 +315,10 @@ angular.module('scriptApp', [])
     }
 
     function nodeText(node){
-        return node.firstChild.nodeValue;
+        if(node && node.firstChild){
+            return node.firstChild.nodeValue;
+        }
+        return null;
     }
 });
 
