@@ -68,7 +68,7 @@
                 </div>
              </div>
          </div>
-         <div style="margin-top: 200px">
+         <div style="margin-top: 20px">
              <button type="button" ng-click="read()">Read</button>
              <button type="button" ng-click="write()">Write</button>
          </div>
@@ -92,6 +92,14 @@
         &lt;type&gt;1&lt;/type&gt;
       &lt;/filters&gt;
     &lt;/field&gt;
+      &lt;sql id="viewID" name="Views"&gt;
+       SELECT
+       Display = [Name],
+       ID = [ArtifactID]
+       FROM
+       [View]
+  &lt;/sql&gt;
+  &lt;object id="Tab" name="Tab" displaytype="multipicker" typeartifactid="1035238" rdoviewartifactid="1034262" /&gt;
   &lt;/input&gt;
   &lt;display type="itemlist"&gt;&lt;/display&gt;
 &lt;action returns="table"&gt;

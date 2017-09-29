@@ -4,8 +4,8 @@ angular.module('scriptApp', [])
 
     var editor = ace.edit("sqlEditor");
 
-    $scope.parameterTypes = ['constant', 'sql', 'search'];
-    $scope.dataTypes = ['Date', 'DateTime', ''];
+    $scope.parameterTypes = ['constant', 'sql', 'search', 'field', 'object'];
+    $scope.dataTypes = ['Date', 'DateTime', 'number', 'name', 'text'];
 
     $scope.script = {
         Name: '',
@@ -29,7 +29,7 @@ angular.module('scriptApp', [])
     $scope.init = function() {
         editor.setTheme("ace/theme/solarized_dark");
         editor.getSession().setMode("ace/mode/sqlserver");
-        //$scope.read();
+        $scope.read();
     }
 
     $scope.init(); 
@@ -48,14 +48,65 @@ angular.module('scriptApp', [])
         //Script parameters
         var inputNode = xmlScript.getElementsByTagName('input')[0];
         var parameterNodes = inputNode.children;
+        var parameters = [];
         for (var i = 0, len = parameterNodes.length; i < len; i++) {
             var parameterNode = parameterNodes[i];
-            console.log(parameterNode.nodeName);
+            parameters.push(readParameter(parameterNode));
         }
+        script.parameters = parameters;
         var actionNode = scriptNode.getElementsByTagName('action')[0];
         var sqlScript = actionNode.firstChild.wholeText;
+        console.log(script);
         editor.setValue(sqlScript);
         editor.gotoLine(1);
+    }
+
+    function readParameter(node){
+        var parameter = {
+            parameterType: node.nodeName,
+            id: node.id,
+            name: node.getAttribute('name'),
+        };
+        switch(node.nodeName){
+            case 'constant':
+                parameter.required = node.getAttribute('required');
+                parameter.dataType = node.getAttribute('type');
+                break;
+            case 'sql':
+                parameter.sql = nodeText(node);
+                break;
+            case 'field':
+                parameter.filters = readFilters(node);
+                break;
+            case 'object':
+                parameter.required = node.getAttribute('required');
+                parameter.displaytype = node.getAttribute('displaytype');
+                parameter.typeartifactid = node.getAttribute('typeartifactid');
+                parameter.rdoviewartifactid = node.getAttribute('rdoviewartifactid');
+                break;
+        }
+        return parameter;
+    }
+
+    function readFilters(node){
+        var categories= [];
+        var types= [];
+        var filtersNode = node.firstElementChild;
+        for (var i = 0, len = filtersNode.children.length; i < len; i++) {
+            var child = filtersNode.children[i];
+            switch (child.nodeName) {
+                case 'type':
+                    types.push(nodeText(child));
+                    break;
+                case 'category':
+                    categories.push(nodeText(child));
+                    break;
+            }
+        }
+        return {
+            categories: categories,
+            types: types
+        };
     }
 
     function nodeText(node){
