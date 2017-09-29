@@ -80,7 +80,8 @@ angular.module('scriptApp', [])
     };
 
     $scope.write = function() {
-        createXml($scope.script);
+        var script = createXml($scope.script);
+        console.log(script);
     };
 
     $scope.init = function() {
@@ -140,7 +141,7 @@ angular.module('scriptApp', [])
         xw.writeEndElement(); //script
         xw.writeEndDocument();
         var xml = xw.flush(); //generate the xml string
-        console.log(xml);
+        return xml.replace('<?xml version="1.0" encoding="UTF-8" ?>', '');
     }
 
     function writeSecurity(xw, security){
