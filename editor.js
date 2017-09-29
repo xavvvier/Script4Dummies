@@ -81,7 +81,7 @@ angular.module('scriptApp', [])
 
     $scope.write = function() {
         var script = createXml($scope.script);
-        console.log(script);
+        return script;
     };
 
     $scope.init = function() {
@@ -347,3 +347,9 @@ angular.module('scriptApp', [])
     }
 });
 
+
+function xmlScript(){
+	var s = angular.element(document.body).scope();
+	return s.write();
+}
+  
