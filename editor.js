@@ -3,23 +3,33 @@ angular.module('scriptApp', [])
 .controller('scriptCtrl', function($scope){
 
     var editor = ace.edit("sqlEditor");
+    //var editorParameter = ace.edit("sqlEditorParameter");
 
     $scope.parameterTypes = ['constant', 'sql', 'search'];
-    $scope.dataTypes = ['Date', 'DateTime', ''];
+    $scope.types = ['Date', 'DateTime', 'Text', 'User', 'Number', 'TimeZone'];
 
     $scope.script = {
         Name: '',
         Description: '',
         Category: '',
         parameters: [
-            {id: 'initDate', name:'Initial Date', parameterType: 'constant' },
-            {id: 'endDate', name:'End Date', parameterType: 'constant'}
+            {id: 'initDate', name:'Initial Date', parameterType: 'constant', type: 'User', precision: '', required: true},
+            {id: 'endDate', name:'End Date', parameterType: 'constant', type: 'Number', option: [
+                {text: '1'}, {text: '2'}
+            ]}
         ]
     };
 
     $scope.addParameter = function(){
-        model.parameters.push({});
+        $scope.script.parameters.push({});
     };
+
+    $scope.addOption = function (parameter) {
+        if (parameter.option == null)
+            parameter.option = [];
+        parameter.option.push({});
+        console.log(parameter.option)
+    }
 
     $scope.read = function () {
         var targetElement = document.getElementById('targetElement');
@@ -29,10 +39,12 @@ angular.module('scriptApp', [])
     $scope.init = function() {
         editor.setTheme("ace/theme/solarized_dark");
         editor.getSession().setMode("ace/mode/sqlserver");
+        //editorParameter.setTheme("ace/theme/solarized_dark");
+        //editorParameter.getSession().setMode("ace/mode/sqlserver");
         //$scope.read();
     }
 
-    $scope.init(); 
+    $scope.init();
 
     function loadScript(element, script){
         var scriptDefinition = targetElement.value;

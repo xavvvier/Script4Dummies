@@ -32,7 +32,7 @@
          <div>
              Parameters:
              <div>
-                 <button type="buttom" ng-click="addParameter()">Add New...</button>
+                 <button type="button" ng-click="addParameter()">Add New...</button>
              </div>
              <div class="parameters-container">
                 <div class="parameter" ng-repeat="parameter in script.parameters track by $index">
@@ -44,28 +44,43 @@
                         </label>
                         <label>
                             Id:
-                            <input ng-model="parameter.id">
+                            <input ng-model="parameter.id"/>
                         </label>
                         <label>
                             Name:
-                            <input ng-model="parameter.name">
-                        </label>
-                        <label ng-if="parameter.parameterType=='acl'">
-                            Artifact ID:
-                            <input ng-model="parameter.typeartifactid">
+                            <input ng-model="parameter.name"/>
                         </label>
                         <label ng-if="parameter.parameterType=='constant'">
                             Data Type:
-                            <select ng-options="dt for dt in dataTypes" ng-model="parameter.dataType">
+                            <select ng-options="dt for dt in types" ng-model="parameter.type"/>
                             </select>
                         </label>
+                        <label ng-if="parameter.parameterType=='constant' && parameter.type=='Number'">
+                            Precision:
+                            <input type="text" ng-model="parameter.precision"/>
+                            Scale:
+                            <input type="text" ng-model="parameter.scale"/>
+                        </label>
+
+                        <label ng-if="parameter.parameterType=='constant'">
+                            Required:
+                            <input type="checkbox" ng-model="parameter.required">
+                            
+                            <input type="button" value="Add option" ng-click="addOption(parameter)">
+                            <div ng-repeat="option in parameter.option track by $index">
+                                <input type="text" ng-model="option.text"/>
+                            </div>
+                        </label>
+
                         <label ng-if="parameter.parameterType=='sql'">
                             Sql:
-                            <input ng-model="parameter.sql">
+                            <input ng-model="parameter.sql"/>
+                            <!-- <div id="sqlEditorParameter"></div> -->
                         </label>
                     </div>
                     ------------------
                 </div>
+                {{script.parameters | json}}
              </div>
          </div>
          <div style="margin-top: 200px">
