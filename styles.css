@@ -1,6 +1,8 @@
 #sqlEditor { 
     width: 600px;
     height: 600px;
+    border: 1px solid gray;
+    border-radius: 3px;
 }
 
 body{
@@ -96,7 +98,7 @@ h2 {
 
 .cardContainer .cardSection h2 {
     color: #3471b7;
-    margin-top: 5px;
+    margin-top: 0;
     margin-bottom: 5px;
     padding-left: 15px;
     display: block;
