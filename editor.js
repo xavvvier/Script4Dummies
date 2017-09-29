@@ -7,8 +7,17 @@ angular.module('scriptApp', [])
 
     $scope.parameterTypes = ['constant', 'sql', 'field', 'search', 'searchprovider', 'object'];
     $scope.types = ['date', 'datetime', 'text', 'user', 'number', 'timezone'];
+    $scope.returns = ['status', 'table'];
+    $scope.displayTypes = ['report', 'table'];
 
     $scope.script = {
+        action: {
+            returns: 'table',
+            timeout: 12345,
+            displaywarning: false,
+            allowhtmltagsinoutput: true,
+            name: 'test'
+        },
         Name: '',
         Description: '',
         Category: '',
@@ -59,6 +68,10 @@ angular.module('scriptApp', [])
                 filters.type = [];
             filters.type.push({});
         }
+    }
+
+    $scope.addAcl = function (parameter) {
+        $scope.script.security.acl.push({});
     }
 
     $scope.read = function () {
