@@ -3,17 +3,20 @@ angular.module('scriptApp', [])
 .controller('scriptCtrl', function($scope){
 
     var editor = ace.edit("sqlEditor");
+    //var editorParameter = ace.edit("sqlEditorParameter");
 
-    $scope.parameterTypes = ['constant', 'sql', 'search', 'field', 'object'];
-    $scope.dataTypes = ['Date', 'DateTime', 'number', 'name', 'text'];
+    $scope.parameterTypes = ['constant', 'sql', 'search'];
+    $scope.types = ['Date', 'DateTime', 'Text', 'User', 'Number', 'TimeZone'];
 
     $scope.script = {
         Name: '',
         Description: '',
         Category: '',
         parameters: [
-            {id: 'initDate', name:'Initial Date', parameterType: 'constant' },
-            {id: 'endDate', name:'End Date', parameterType: 'constant'}
+            {id: 'initDate', name:'Initial Date', parameterType: 'constant', type: 'User', precision: '', required: true},
+            {id: 'endDate', name:'End Date', parameterType: 'constant', type: 'Number', option: [
+                {text: '1'}, {text: '2'}
+            ]}
         ],
         action: {
             timeout: '',
@@ -25,8 +28,15 @@ angular.module('scriptApp', [])
     };
 
     $scope.addParameter = function(){
-        model.parameters.push({});
+        $scope.script.parameters.push({});
     };
+
+    $scope.addOption = function (parameter) {
+        if (parameter.option == null)
+            parameter.option = [];
+        parameter.option.push({});
+        console.log(parameter.option)
+    }
 
     $scope.read = function () {
         var targetElement = document.getElementById('targetElement');
@@ -40,10 +50,9 @@ angular.module('scriptApp', [])
     $scope.init = function() {
         editor.setTheme("ace/theme/solarized_dark");
         editor.getSession().setMode("ace/mode/sqlserver");
-        $scope.write();
     }
 
-    $scope.init(); 
+    $scope.init();
 
     function createXml(script){
         var xw = new XMLWriter('UTF-8');
@@ -94,11 +103,11 @@ angular.module('scriptApp', [])
                 xw.writeStartElement('filters');
                 var types = parameter.filters.types;
                 for (var i = 0, len = types.length; i < len; i++) {
-                    xw.writeElementString('type', types[i]);
+                    xw.writeElementString('type', types[i].text);
                 }
                 var categories = parameter.filters.categories;
                 for (var i = 0, len = categories.length; i < len; i++) {
-                    xw.writeElementString('category', categories[i]);
+                    xw.writeElementString('category', categories[i].text);
                 }
                 xw.writeEndElement();//filters
                 break;
@@ -183,10 +192,10 @@ angular.module('scriptApp', [])
             var child = filtersNode.children[i];
             switch (child.nodeName) {
                 case 'type':
-                    types.push(nodeText(child));
+                    types.push({text: nodeText(child)});
                     break;
                 case 'category':
-                    categories.push(nodeText(child));
+                    categories.push({text: nodeText(child)});
                     break;
             }
         }
