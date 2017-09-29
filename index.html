@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="styles.css">
     <script src="angular.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="XMLWriter-min.js" type="text/javascript" charset="utf-8"></script>
     <script src="editor.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body ng-controller="scriptCtrl">
@@ -78,12 +79,11 @@
                             <!-- <div id="sqlEditorParameter"></div> -->
                         </label>
                     </div>
-                    ------------------
                 </div>
                 {{script.parameters | json}}
              </div>
          </div>
-         <div style="margin-top: 200px">
+         <div style="margin-top: 20px">
              <button type="button" ng-click="read()">Read</button>
              <button type="button" ng-click="write()">Write</button>
          </div>
@@ -107,6 +107,14 @@
         &lt;type&gt;1&lt;/type&gt;
       &lt;/filters&gt;
     &lt;/field&gt;
+      &lt;sql id="viewID" name="Views"&gt;
+       SELECT
+       Display = [Name],
+       ID = [ArtifactID]
+       FROM
+       [View]
+  &lt;/sql&gt;
+  &lt;object id="Tab" name="Tab" displaytype="multipicker" typeartifactid="1035238" rdoviewartifactid="1034262" /&gt;
   &lt;/input&gt;
   &lt;display type="itemlist"&gt;&lt;/display&gt;
 &lt;action returns="table"&gt;
