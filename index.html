@@ -199,6 +199,15 @@
 &lt;name&gt;My script&lt;/name&gt;
 &lt;description&gt;This is an awesome script&lt;/description&gt;
 &lt;category&gt;Testing scripts&lt;/category&gt;
+&lt;key&gt;1234-key-456&lt;/key&gt;
+&lt;display type="report"&gt;
+	&lt;settings reporttitle="Test Title" /&gt;
+&lt;/display&gt;
+&lt;version&gt;1.2.3.0&lt;/version&gt;
+&lt;security&gt;
+     &lt;acl id="acl1" typeartifactid="123" type="delete" typeartifactguid="the-guid"/&gt;
+     &lt;acl id="acl2" typeartifactid="456" type="view" typeartifactguid="the-guid2"/&gt;
+&lt;/security&gt;
   &lt;input&gt;
     &lt;constant id="_year" name="Usage Period Year (YYYY)" type="number" /&gt;
     &lt;constant id="_month" name="Usage Period Month (MM)" type="number" /&gt;
@@ -221,7 +230,6 @@
   &lt;/sql&gt;
   &lt;object id="Tab" name="Tab" displaytype="multipicker" typeartifactid="1035238" rdoviewartifactid="1034262" /&gt;
   &lt;/input&gt;
-  &lt;display type="itemlist"&gt;&lt;/display&gt;
 &lt;action returns="table"&gt;
 &lt;![CDATA[
 

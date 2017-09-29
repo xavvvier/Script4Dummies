@@ -21,6 +21,8 @@ angular.module('scriptApp', [])
         Name: '',
         Description: '',
         Category: '',
+        version: '',
+        key: '',
         parameters: [
             {id: 'initDate', name:'Initial Date', parameterType: 'constant', dataType: 'user', precision: '', required: true},
             {id: 'endDate', name:'End Date', parameterType: 'constant', dataType: 'number', option: [
@@ -36,10 +38,9 @@ angular.module('scriptApp', [])
                 ]
             }}
         ],
-        key: '',
-        display: { type: 'report', settings: { reporttitle: 'testreporttitle' }},
-        version: '',
-        security: {acl: [{id:1, type:'ee'}]}
+        action: { },
+        security: { },
+        display: { }
     };
 
     $scope.addParameter = function(){
@@ -50,7 +51,6 @@ angular.module('scriptApp', [])
         if (parameter.option == null)
             parameter.option = [];
         parameter.option.push({});
-        console.log(parameter.option)
     }
 
     $scope.addFilter = function (parameter, category) {
@@ -101,13 +101,40 @@ angular.module('scriptApp', [])
         xw.writeElementString('name', script.Name);
         xw.writeElementString('description', script.Description);
         xw.writeElementString('category', script.Category);
+        if(script.key){
+            xw.writeElementString('key', script.key);
+        }
+        if(script.version){
+            xw.writeElementString('version', script.version);
+        }
         xw.writeStartElement('input');
-        console.log(script.parameters.length);
         for (var i = 0, len = script.parameters.length; i < len; i++) {
             var parameter = script.parameters[i];
             writeParameter(xw, parameter);
         }
         xw.writeEndElement();//input
+        xw.writeStartElement('display');
+        writeAttrIfNotNull(xw, 'type', script.display.type);
+        if(script.display.settings && script.display.settings.reporttitle){
+            xw.writeStartElement('settings');
+            xw.writeAttributeString('reporttitle', script.display.settings.reporttitle);
+            xw.writeEndElement();//settings
+        }
+        if(script.security && script.security.acl && script.security.acl.length){
+            xw.writeStartElement('security');
+            var acls = script.security.acl;
+            for (var i = 0, len = acls.length; i < len; i++) {
+                var acl = acls[i];
+                xw.writeStartElement('acl');
+                writeAttrIfNotNull(xw, 'id', acl.id);
+                writeAttrIfNotNull(xw, 'typeartifactid', acl.typeartifactid);
+                writeAttrIfNotNull(xw, 'typeartifactguid', acl.typeartifactguid);
+                writeAttrIfNotNull(xw, 'type', acl.type);
+                xw.writeEndElement();//acl
+            }
+            xw.writeEndElement();//security
+        }
+        xw.writeEndElement();//display
         xw.writeStartElement('action');
         xw.writeAttributeString('returns', script.action.returns);
         writeAttrIfNotNull(xw, 'timeout', script.action.timeout);
@@ -181,6 +208,8 @@ angular.module('scriptApp', [])
         script.Name = nodeText(scriptNode.getElementsByTagName('name')[0]);
         script.Description = nodeText(scriptNode.getElementsByTagName('description')[0]);
         script.Category = nodeText(scriptNode.getElementsByTagName('category')[0]);
+        script.key = nodeText(scriptNode.getElementsByTagName('key')[0]);
+        script.version = nodeText(scriptNode.getElementsByTagName('version')[0]);
         //Script parameters
         var inputNode = xmlScript.getElementsByTagName('input')[0];
         var parameterNodes = inputNode.children;
@@ -192,13 +221,47 @@ angular.module('scriptApp', [])
         script.parameters = parameters;
         var actionNode = scriptNode.getElementsByTagName('action')[0];
         var sqlScript = actionNode.firstChild.wholeText;
-        script.action.returns = actionNode.getAttribute('returns');
-        script.action.timeout = actionNode.getAttribute('timeout');
-        script.action.displaywarning = actionNode.getAttribute('displaywarning');
-        script.action.allowhtmltagsinoutput = actionNode.getAttribute('allowhtmltagsinoutput');
-        script.action.name = actionNode.getAttribute('name');
+        readAction(actionNode, script.action);
         editor.setValue(sqlScript);
         editor.gotoLine(1);
+        var securityNode = scriptNode.getElementsByTagName('security')[0];
+        readSecurity(securityNode, script.security);
+        var displayNode = scriptNode.getElementsByTagName('display')[0];
+        readDisplay(displayNode, script.display);
+    }
+
+    function readAction(actionNode, action){
+        action.returns = actionNode.getAttribute('returns');
+        action.timeout = actionNode.getAttribute('timeout');
+        action.displaywarning = actionNode.getAttribute('displaywarning');
+        action.allowhtmltagsinoutput = actionNode.getAttribute('allowhtmltagsinoutput');
+        action.name = actionNode.getAttribute('name');
+    }
+
+    function readSecurity(securityNode, security){
+        security.acl = [];
+        if(securityNode){
+            for (var i = 0, len = securityNode.children.length; i < len; i++) {
+                var child = securityNode.children[i];
+                security.acl.push({
+                    id: child.getAttribute('id'),
+                    typeartifactid: child.getAttribute('typeartifactid'),
+                    typeartifactguid: child.getAttribute('typeartifactguid'),
+                    type: child.getAttribute('type'),
+                });
+            }
+        }
+    }
+    function readDisplay(displayNode, display){
+        if(displayNode){
+            display.type = displayNode.getAttribute('type'); 
+            var settings = displayNode.firstElementChild;
+            display.settings = null;
+            if(settings){
+                display.settings = {};
+                display.settings.reporttitle = settings.getAttribute('reporttitle');
+            }
+        }
     }
 
     function readParameter(node){
@@ -265,7 +328,10 @@ angular.module('scriptApp', [])
     }
 
     function nodeText(node){
-        return node.firstChild.nodeValue;
+        if(node && node.firstChild){
+            return node.firstChild.nodeValue;
+        }
+        return null;
     }
 });
 
