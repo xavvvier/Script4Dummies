@@ -27,7 +27,9 @@ angular.module('scriptApp', [])
                 ]
             }}
         ],
-        action: { }
+        action: { },
+        security: { },
+        display: { }
     };
 
     $scope.addParameter = function(){
@@ -38,7 +40,6 @@ angular.module('scriptApp', [])
         if (parameter.option == null)
             parameter.option = [];
         parameter.option.push({});
-        console.log(parameter.option)
     }
 
     $scope.addFilter = function (parameter, category) {
@@ -176,13 +177,47 @@ angular.module('scriptApp', [])
         script.parameters = parameters;
         var actionNode = scriptNode.getElementsByTagName('action')[0];
         var sqlScript = actionNode.firstChild.wholeText;
-        script.action.returns = actionNode.getAttribute('returns');
-        script.action.timeout = actionNode.getAttribute('timeout');
-        script.action.displaywarning = actionNode.getAttribute('displaywarning');
-        script.action.allowhtmltagsinoutput = actionNode.getAttribute('allowhtmltagsinoutput');
-        script.action.name = actionNode.getAttribute('name');
+        readAction(actionNode, script.action);
         editor.setValue(sqlScript);
         editor.gotoLine(1);
+        var securityNode = scriptNode.getElementsByTagName('security')[0];
+        readSecurity(securityNode, script.security);
+        var displayNode = scriptNode.getElementsByTagName('display')[0];
+        readDisplay(displayNode, script.display);
+    }
+
+    function readAction(actionNode, action){
+        action.returns = actionNode.getAttribute('returns');
+        action.timeout = actionNode.getAttribute('timeout');
+        action.displaywarning = actionNode.getAttribute('displaywarning');
+        action.allowhtmltagsinoutput = actionNode.getAttribute('allowhtmltagsinoutput');
+        action.name = actionNode.getAttribute('name');
+    }
+
+    function readSecurity(securityNode, security){
+        security.acl = [];
+        if(securityNode){
+            for (var i = 0, len = securityNode.children.length; i < len; i++) {
+                var child = securityNode.children[i];
+                security.acl.push({
+                    id: child.getAttribute('id'),
+                    typeartifactid: child.getAttribute('typeartifactid'),
+                    typeartifactguid: child.getAttribute('typeartifactguid'),
+                    type: child.getAttribute('type'),
+                });
+            }
+        }
+    }
+    function readDisplay(displayNode, display){
+        if(displayNode){
+            display.type = displayNode.getAttribute('type'); 
+            var settings = displayNode.firstElementChild;
+            display.settings = null;
+            if(settings){
+                display.settings = {};
+                display.settings.reporttitle = settings.getAttribute('reporttitle');
+            }
+        }
     }
 
     function readParameter(node){
