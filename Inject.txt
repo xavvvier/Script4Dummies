@@ -1,0 +1,79 @@
+//Append the following span to #_scriptBodyHeader to D:\Program Files\kCura Corporation\Relativity\EDDS\Case\RelativityScript\Edit.aspx:
+
+<span class="dummy-question"> Are you a dummy?</span>
+
+//Add the following code before the closing tab </asp:panel>
+
+<style>
+.modal-context{
+    box-sizing: border-box;
+    outline: 0;
+    background-color: rgba(54,25,25,.2);
+    left: 0;
+    overflow: auto;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    z-index: 100;  
+	height: 100%;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+span.dummy-question{
+	margin-left: 50px;
+	color: green;
+	cursor: pointer;
+}
+.dynamic-content-modal-content-container {
+    border: none;
+    height: 766px;
+    width: 100%;
+}
+.modal-container{
+	height: 800px; 
+	width: 1200px;
+	background-color: #f7f7f7;
+	margin: auto;
+	border-radius: 3px;
+	text-align: center;
+}
+.dynamic-content-modal-close{
+    background-color: #2356a6!important;
+    background: linear-gradient(#0063af,#1b5495);
+    border-color: #194b87;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 3px;
+    vertical-align: middle;
+    height: 16px;
+    line-height: 16px;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    box-sizing: content-box;
+    color: #fff!important;
+    padding: 3px 8px;
+	margin-top: 4px;
+	margin-bottom: 4px;
+}
+</style>
+<div id="dummyWorld" style="display: none">
+	<div class="modal-context first-focus-element" tabindex="0">
+		<div class="modal-container">
+			<button class="dynamic-content-modal-close" type="button">Close</button>
+			<iframe id="script4DummiesModal" class="dynamic-content-modal-content-container" src="about:blank"></iframe>
+		</div>
+	</div>
+</div>
+<script language=javascript>
+	$('.dummy-question').click(function(){
+		$('#dummyWorld').show();
+		$('#script4DummiesModal').attr('src', '/Relativity/custompages/faaac71d-a1f7-4bf6-af82-cac6b085f9bf/index.html');
+	});
+	$('.dynamic-content-modal-close').click(function(){
+		var modalWindow = document.getElementById("script4DummiesModal").contentWindow;
+		var result = modalWindow.xmlScript();
+		$('textarea.script-body').val(result);
+		$('#dummyWorld').hide();
+	});
+</script>
