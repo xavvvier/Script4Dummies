@@ -14,7 +14,14 @@ angular.module('scriptApp', [])
         parameters: [
             {id: 'initDate', name:'Initial Date', parameterType: 'constant' },
             {id: 'endDate', name:'End Date', parameterType: 'constant'}
-        ]
+        ],
+        action: {
+            timeout: '',
+            returns: '',
+            displaywarning: '',
+            allowhtmltagsinoutput: '',
+            name: ''
+        }
     };
 
     $scope.addParameter = function(){
@@ -84,15 +91,31 @@ angular.module('scriptApp', [])
                 xw.writeCDATA(parameter.sql);
                 break;
             case 'field':
-                //parameter.filters = readFilters(node);
+                xw.writeStartElement('filters');
+                var types = parameter.filters.types;
+                for (var i = 0, len = types.length; i < len; i++) {
+                    xw.writeElementString('type', types[i]);
+                }
+                var categories = parameter.filters.categories;
+                for (var i = 0, len = categories.length; i < len; i++) {
+                    xw.writeElementString('category', categories[i]);
+                }
+                xw.writeEndElement();//filters
                 break;
             case 'object':
-                //parameter.required = node.getAttribute('required');
-                //parameter.typeartifactid = node.getAttribute('typeartifactid');
-                //parameter.rdoviewartifactid = node.getAttribute('rdoviewartifactid');
-                //parameter.displaytype = node.getAttribute('displaytype');
-                //parameter.typeartifactguid = node.getAttribute('typeartifactguid');
-                //parameter.rdoviewartifactguid = node.getAttribute('rdoviewartifactguid');
+                if(parameter.required!=null){
+                    xw.writeAttributeString('required', String(parameter.required));
+                }
+                var writeIfNotNull = function(name, value) {
+                    if(value!=null){
+                        xw.writeAttributeString(name, value);
+                    }
+                };
+                writeIfNotNull('typeartifactid', parameter.typeartifactid);
+                writeIfNotNull('rdoviewartifactid', parameter.rdoviewartifactid);
+                writeIfNotNull('displaytype', parameter.displaytype);
+                writeIfNotNull('typeartifactguid', parameter.typeartifactguid);
+                writeIfNotNull('rdoviewartifactguid', parameter.rdoviewartifactguid);
                 break;
         }
         xw.writeEndElement();
@@ -103,12 +126,10 @@ angular.module('scriptApp', [])
         var parser = new DOMParser();
         var xmlScript = parser.parseFromString(scriptDefinition, "text/xml");
         var scriptNode = xmlScript.firstChild;
-
         //Script Basic Properties
         script.Name = nodeText(scriptNode.getElementsByTagName('name')[0]);
         script.Description = nodeText(scriptNode.getElementsByTagName('description')[0]);
         script.Category = nodeText(scriptNode.getElementsByTagName('category')[0]);
-
         //Script parameters
         var inputNode = xmlScript.getElementsByTagName('input')[0];
         var parameterNodes = inputNode.children;
