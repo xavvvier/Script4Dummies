@@ -138,6 +138,10 @@ angular.module('scriptApp', [])
         return script;
     };
 
+    $scope.print= function(){
+        console.log($scope.write());
+    }
+
     $scope.init = function() {
         editor.setTheme('ace/theme/sqlserver');
         editor.getSession().setMode("ace/mode/sqlserver");
