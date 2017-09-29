@@ -196,3 +196,17 @@ select {
     cursor: pointer;
     text-decoration: none;
 }
+
+.parameter-link{
+   margin-left: 13px; 
+   cursor: pointer;
+}
+.parameter-link:hover{
+    text-decoration: underline;
+}
+.parameter-link div{
+   display: inline;
+}
+.parameter-link img{
+    width: 19px;
+}

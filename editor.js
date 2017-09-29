@@ -98,7 +98,7 @@ angular.module('scriptApp', [])
     };
 
     $scope.addParameter = function(){
-        $scope.script.parameters.push({});
+        $scope.script.parameters.push({open: true});
     };
 
     $scope.addOption = function (parameter) {
