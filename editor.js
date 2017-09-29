@@ -10,6 +10,7 @@ angular.module('scriptApp', [])
     $scope.types = ['date', 'datetime', 'text', 'user', 'number', 'timezone'];
     $scope.returns = ['status', 'table'];
     $scope.displayTypes = ['report', 'table'];
+    $scope.aclTypes = ['view', 'edit', 'delete'];
     $scope.openModal = false;
     $scope.editingParameter = null;
 
