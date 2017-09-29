@@ -11,6 +11,41 @@ angular.module('scriptApp', [])
     $scope.returns = ['status', 'table'];
     $scope.displayTypes = ['report', 'table'];
     $scope.aclTypes = ['view', 'edit', 'delete'];
+    $scope.fieldFiltersType = [
+        "Fixed-Length Text",
+        "Whole Number",
+        "Date",
+        "Yes/No",
+        "Long Text",
+        "Single-Choice List",
+        "Decimal",
+        "Currency",
+        "Multiple-Choice List",
+        "File <not in use in Relativity>",
+         "Object <not in use in Relativity>",
+         "User",
+         "LayoutText <do not use>",
+         "Objects"
+    ];
+    $scope.fieldFiltersCategory = [
+        "Generic",
+        "FullText",
+        "Identifier",
+        "Associative",
+        "Comments",
+        "Relational",
+        "ProductionMarker",
+        "AutoCreate",
+        "<not in use>",
+        "FolderName",
+        "FileInfo",
+        "ParentArtifact",
+        "MarkupSetMarker",
+        "GenericSystem",
+        "MultiReflected",
+        "Batch"
+    ];
+
     $scope.openModal = false;
     $scope.editingParameter = null;
 
@@ -28,7 +63,10 @@ angular.module('scriptApp', [])
         version: '',
         key: '',
         parameters: [
-            // {id: 'initDate', name:'Initial Date', parameterType: 'constant', dataType: 'user', precision: '', required: true},
+            // {id: 'initDate', name:'Initial Date', parameterType: 'field', dataType: 'user', precision: '', required: true,
+            // filters: {category: [
+            //     {text: '4'}, {text: '2'}
+            // ], type: [{text: '6'}, {text: '4'}]}},
             // {id: 'endDate', name:'End Date', parameterType: 'constant', dataType: 'number', option: [
             //     {text: '1'}, {text: '2'}
             // ], rdoviewartifactid: 123},

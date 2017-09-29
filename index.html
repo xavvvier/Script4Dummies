@@ -220,7 +220,7 @@
                                         <input class="ActionButton" type="button" ng-click="addFilter(parameter, true)" value="Add Category"></td>
                                     <td>
                                         <label ng-repeat="category in parameter.filters.category track by $index">
-                                            <input type="text" ng-model="category.text">
+                                            <select ng-options="key as value for (key , value) in fieldFiltersCategory" ng-model="category.text"></select>
                                         </label>
                                     </td>
                                 </tr>
@@ -229,7 +229,7 @@
                                     <td style="vertical-align: top;"><input class="ActionButton" type="button" ng-click="addFilter(parameter, false)" value="Add Type"></td>
                                     <td>
                                         <label ng-repeat="type in parameter.filters.type track by $index">
-                                            <input type="text" ng-model="type.text">
+                                            <select ng-options="key as value for (key , value) in fieldFiltersType" ng-model="type.text"></select>
                                         </label>
                                     </td>
                                 </tr>
