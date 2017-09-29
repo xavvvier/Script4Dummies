@@ -18,65 +18,72 @@
         </div>
     </div>
     <div class="panel">
-        
         <div class="cardContainer">
-            <div class="cardSection">
-                <h2>Action </h2>
-                <table class="fieldTable">
-                    <tbody>
-                        <tr>
-                            <td class="dynamicEditFieldNameRequired">Time out: </td>
-                            <td><input type="text" ng-model="script.action.timeout"></td>
-                        </tr>
-
-                        <tr>
-                            <td class="dynamicEditFieldNameRequired">Returns: </td>
-                            <td>
-                                <select ng-options="return for return in returns" ng-model="script.action.returns"></select>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Display Warning: </td>
-                            <td><input type="checkbox" ng-model="script.action.displaywarning"></td>
-                        </tr>
-
-                        <tr>
-                            <td>Allow html tags in out sput: </td>
-                            <td><input type="checkbox" ng-model="script.action.allowhtmltagsinoutput"></td>
-                        </tr>
-
-                        <tr>
-                            <td class="dynamicEditFieldNameRequired">Name action: </td>
-                            <td><input type="text" ng-model="script.action.name"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-
             <div class="cardSection">
                 <h2>General </h2>
                 <table class="fieldTable">
                     <tbody>
                         <tr>
-                            <td class="dynamicEditFieldNameRequired">Name: </td>
-                            <td><input ng-model="script.Name"></td>
+                            <td class="dynamicEditFieldNameRequired">
+                                <label for="name">Name:</label>
+                            </td>
+                            <td><input type="text" id="name" ng-model="script.Name"></td>
+                            <td class="dynamicEditFieldNameRequired">
+                                <label for="category">Category:</label>
+                            </td>
+                            <td><input type="text" id="category" ng-model="script.Category"></td>
                         </tr>
 
                         <tr>
-                            <td class="dynamicEditFieldNameRequired">Description: </td>
-                            <td><input ng-model="script.Description"></td>
-                        </tr>
-
-                        <tr>
-                            <td class="dynamicEditFieldNameRequired">Category: </td>
-                            <td><input ng-model="script.Category"></td>
+                            <td class="dynamicEditFieldNameRequired">
+                                <label for="description">Description:</label>
+                            </td>
+                            <td><input type="text" id="description" ng-model="script.Description"></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-
+            <div class="cardSection">
+                <h2>Action </h2>
+                <table class="fieldTable">
+                    <tbody>
+                        <tr>
+                            <td class="dynamicEditFieldNameRequired">
+                                 <label for="returns">Returns:</label>
+                            </td>
+                            <td>
+                                <select id="returns" 
+                                    ng-options="return for return in returns" 
+                                    ng-model="script.action.returns"></select>
+                            </td>
+                            <td class="dynamicEditFieldNameRequired">
+                                <label for="timeout">Timeout:</label>
+                            </td>
+                            <td><input id="timeout" type="text" ng-model="script.action.timeout"></td>
+                        </tr>
+                        <tr>
+                            <td class="dynamicEditFieldNameRequired">
+                                <label for="actionname">Name action:</label>
+                            </td>
+                            <td><input type="text" id="actionname" ng-model="script.action.name"></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                        </tr>
+                    </tbody>
+                </table>
+                <div>
+                    <input type="checkbox" class="checkbox-value" id="displaywarning" ng-model="script.action.displaywarning">
+                    <label for="displaywarning">Display Warning:</label>
+                </div>
+                <div>
+                    <input type="checkbox" class="checkbox-value" id="allowhtmltags" ng-model="script.action.allowhtmltagsinoutput">
+                    <label for="allowhtmltags">Allow html tags in output:</label>
+                </div>
+            </div>
 
             <div class="cardSection">
                 <h2 style="display: inline;">Input </h2>

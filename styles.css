@@ -28,6 +28,7 @@ body{
     float: left;
     display: inline-block;
     width: 600px;
+    margin: 5px;
 }
 
 .blue-button{
@@ -103,7 +104,6 @@ h2 {
 
 .fieldTable {
     border-color: transparent;
-    width: 100%!important;
     max-width: 525px;
     border-collapse: separate;
     border-spacing: 2px;
@@ -122,9 +122,13 @@ table {
     border-left-color: transparent;
 }
 
-td {
-    width: 180px;
-    min-width: 180px;
+.checkbox-value{
+    margin-left: 112px;
+}
+.fieldTable label{
+    display: inline-block;
+    width: 100px;
+    text-align: right;
 }
 
 tr td:first-child {
@@ -140,8 +144,17 @@ input[type=text], input[type=password], textarea {
     font-size: 12px;
     min-height: 20px;
 }
+input[type=text]:focus, input[type=password]:focus, textarea:focus, select:focus {
+    outline: 0;
+    border-color: #1b54ab;
+}
 
-select {
+select { 
+    vertical-align: middle;
+    border-radius: 3px;
+    border: 1px solid #c1c1c1;
+    font-family: #333;
+    background-color: #fff;
     max-width: 325px;
     height: 24px!important;
     line-height: 24px!important;
