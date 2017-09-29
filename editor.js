@@ -5,7 +5,7 @@ angular.module('scriptApp', [])
     var editor = ace.edit("sqlEditor");
     //var editorParameter = ace.edit("sqlEditorParameter");
 
-    $scope.parameterTypes = ['constant', 'sql', 'search'];
+    $scope.parameterTypes = ['constant', 'sql', 'field', 'search', 'searchprovider', 'object'];
     $scope.types = ['Date', 'DateTime', 'Text', 'User', 'Number', 'TimeZone'];
 
     $scope.script = {
@@ -16,12 +16,21 @@ angular.module('scriptApp', [])
             {id: 'initDate', name:'Initial Date', parameterType: 'constant', type: 'User', precision: '', required: true},
             {id: 'endDate', name:'End Date', parameterType: 'constant', type: 'Number', option: [
                 {text: '1'}, {text: '2'}
-            ]}
+            ], rdoviewartifactid: 123},
+            {id:'test3', name: 'Test3', parameterType: 'fields', filters: {
+                category: [
+                    {text: 3},
+                    {text: 0}
+                ],
+                type: [
+                    {text: 6},
+                ]
+            }}
         ]
     };
 
     $scope.addParameter = function(){
-        $scope.script.parameters.push({});
+        $scope.script.parameters.push();
     };
 
     $scope.addOption = function (parameter) {
@@ -29,6 +38,23 @@ angular.module('scriptApp', [])
             parameter.option = [];
         parameter.option.push({});
         console.log(parameter.option)
+    }
+
+    $scope.addFilter = function (parameter, category) {
+        if(parameter.filters == null)
+            parameter.filters = {};
+
+        filters = parameter.filters;
+
+        if(category) {
+            if(filters.category == null)
+                filters.category = [];
+            filters.category.push({});
+        } else {
+            if(filters.type == null)
+                filters.type = [];
+            filters.type.push({});
+        }
     }
 
     $scope.read = function () {
@@ -61,6 +87,7 @@ angular.module('scriptApp', [])
         xw.writeElementString('description', script.Description);
         xw.writeElementString('category', script.Category);
         xw.writeStartElement('input');
+        console.log(script.parameters.length);
         for (var i = 0, len = script.parameters.length; i < len; i++) {
             var parameter = script.parameters[i];
             writeParameter(xw, parameter);

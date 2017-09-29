@@ -63,13 +63,15 @@
                             <input type="text" ng-model="parameter.scale"/>
                         </label>
 
-                        <label ng-if="parameter.parameterType=='constant'">
+                        <label ng-if="parameter.parameterType=='constant' || parameter.parameterType=='object'">
                             Required:
                             <input type="checkbox" ng-model="parameter.required">
                             
-                            <input type="button" value="Add option" ng-click="addOption(parameter)">
-                            <div ng-repeat="option in parameter.option track by $index">
-                                <input type="text" ng-model="option.text"/>
+                            <div ng-if="parameter.parameterType=='constant'">
+                                <input type="button" value="Add Option" ng-click="addOption(parameter)">
+                                <div ng-repeat="option in parameter.option track by $index">
+                                    <input type="text" ng-model="option.text"/>
+                                </div>
                             </div>
                         </label>
 
@@ -78,6 +80,32 @@
                             <input ng-model="parameter.sql"/>
                             <!-- <div id="sqlEditorParameter"></div> -->
                         </label>
+
+                        <label ng-if="parameter.parameterType=='object'">
+                            Artefact ID:
+                            <input ng-model="parameter.typeartifactid"/>
+                            View artifact ID:
+                            <input ng-model="parameter.rdoviewartifactid"/>
+                            Display Type:
+                            <input ng-model="parameter.displaytype"/>
+                            Artifact GUID
+                            <input ng-model="parameter.typeartifactguid"/>
+                            View Artifact GUID
+                            <input ng-model="parameter.rdoviewartifactguid"/>
+                        </label>
+
+                        <label ng-if="parameter.parameterType == 'field'">
+                            <input type="button" ng-click="addFilter(parameter, true)" value="Add Category">
+                            <label ng-repeat="category in parameter.filters.category track by $index">
+                                <input type="text" ng-model="category.text">
+                            </label>
+
+                            <input type="button" ng-click="addFilter(parameter, false)" value="Add Type">
+                            <label ng-repeat="type in parameter.filters.type track by $index">
+                                <input type="text" ng-model="type.text">
+                            </label>
+                        </label>
+                        
                     </div>
                 </div>
                 {{script.parameters | json}}
