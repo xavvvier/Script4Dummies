@@ -135,7 +135,7 @@ angular.module('scriptApp', [])
 
     $scope.write = function() {
         var script = createXml($scope.script);
-        return script;
+        return script.substr(1);
     };
 
     $scope.print= function(){
