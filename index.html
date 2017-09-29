@@ -89,115 +89,130 @@
                 <h2 style="display: inline;">Input </h2>
                 <button style="float: right; margin-right: 5px;" class="ActionButton" type="button" ng-click="addParameter()">Add New</button>
                 <div style="clear: both;"></div>
-                <table class="fieldTable">
-                    <tbody>
-                        <tr>
-                            <td class="dynamicEditFieldNameRequired">Name: </td>
-                            <td><input ng-model="script.Name"></td>
-                        </tr>
 
-                        <tr>
-                            <td class="dynamicEditFieldNameRequired">Description: </td>
-                            <td><input ng-model="script.Description"></td>
-                        </tr>
+                <table class="fieldTable" ng-repeat="parameter in script.parameters track by $index" style="border-bottom: thin solid #c1c1c1;">
+                    <tr>
+                        <td>
+                            <tr>
+                                <td class="dynamicEditFieldNameRequired">
+                                    <label for="parameterType">Type:</label>
+                                </td>
+                                <td>
+                                    <select id="parameterType" ng-options="type for type in parameterTypes" ng-model="parameter.parameterType"></select>
+                                </td>
+                                <td class="dynamicEditFieldNameRequired">Id: </td>
+                                <td>
+                                    <input type="text" ng-model="parameter.id"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="dynamicEditFieldNameRequired">Name: </td>
+                                <td>
+                                    <input type="text" ng-model="parameter.name"/>
+                                </td>
+                                <td class="dynamicEditFieldNameRequired">Data Type: </td>
+                                <td>
+                                    <select ng-disabled="parameter.parameterType == 'constant'" ng-options="dt for dt in types" ng-model="parameter.dataType"/></select>
+                                </td>
+                            </tr>
 
-                        <tr>
-                            <td class="dynamicEditFieldNameRequired">Category: </td>
-                            <td><input ng-model="script.Category"></td>
-                        </tr>
-                    </tbody>
+                            <tr ng-if="parameter.parameterType=='constant'">
+                            </tr>
+
+                            <tr ng-if="parameter.parameterType=='constant' && parameter.dataType=='number'">
+                                <td class="dynamicEditFieldNameRequired">Precision: </td>
+                                <td>
+                                    <input type="text" ng-model="parameter.precision"/>
+                                </td>
+                                <td class="dynamicEditFieldNameRequired">Scale: </td>
+                                <td>
+                                    <input type="text" ng-model="parameter.scale"/>
+                                </td>
+                            </tr>
+
+                            <tr ng-if="parameter.parameterType=='constant' || parameter.parameterType=='object'">
+                                <td class="dynamicEditFieldNameRequired">Required: </td>
+                                <td>
+                                    <input type="checkbox" ng-model="parameter.required">
+                                </td>
+                            </tr>
+
+                            <tr ng-if="parameter.parameterType=='constant' || parameter.parameterType=='object'">
+                                <td style="vertical-align: top;"><input class="ActionButton" type="button" value="Add Option" ng-click="addOption(parameter)"></td>
+                                <td>
+                                    <div ng-repeat="option in parameter.option track by $index">
+                                        <input type="text" ng-model="option.text"/>
+                                    </div>
+                                </td>
+                            </tr>
+
+
+                            <tr ng-if="parameter.parameterType=='sql'">
+                                <td class="dynamicEditFieldNameRequired">Sql: </td>
+                                <td>
+                                    <a class="ActionButton" href="#" ng-click="openModalFor(parameter)">Edit SQL</a>
+                                </td>
+                            </tr>
+
+                            <!-- start object-->
+                            <tr ng-if="parameter.parameterType=='object'">
+                                <td class="dynamicEditFieldNameRequired">Artefact ID: </td>
+                                <td>
+                                    <input type="text" ng-model="parameter.typeartifactid"/>
+                                </td>
+                            </tr>
+
+                            <tr ng-if="parameter.parameterType=='object'">
+                                <td class="dynamicEditFieldNameRequired">View artifact ID: </td>
+                                <td>
+                                    <input type="text" ng-model="parameter.rdoviewartifactid"/>
+                                </td>
+                            </tr>
+
+                            <tr ng-if="parameter.parameterType=='object'">
+                                <td class="dynamicEditFieldNameRequired">Display Type: </td>
+                                <td>
+                                    <input type="text" ng-model="parameter.displaytype"/>
+                                </td>
+                            </tr>
+
+                            <tr ng-if="parameter.parameterType=='object'">
+                                <td class="dynamicEditFieldNameRequired">Artifact GUID: </td>
+                                <td>
+                                    <input type="text" ng-model="parameter.typeartifactguid"/>
+                                </td>
+                            </tr>
+
+                            <tr ng-if="parameter.parameterType=='object'">
+                                <td class="dynamicEditFieldNameRequired">View Artifact GUID: </td>
+                                <td>
+                                    <input type="text" ng-model="parameter.rdoviewartifactguid"/>
+                                </td>
+                            </tr>
+
+                            <!-- start fields -->
+                            <tr ng-if="parameter.parameterType == 'field'">
+                                <td style="vertical-align: top;"><input class="ActionButton" type="button" ng-click="addFilter(parameter, true)" value="Add Category"></td>
+                                <td>
+                                    <label ng-repeat="category in parameter.filters.category track by $index">
+                                        <input type="text" ng-model="category.text">
+                                    </label>
+                                </td>
+                            </tr>
+
+                            <tr ng-if="parameter.parameterType == 'field'">
+                                <td style="vertical-align: top;"><input class="ActionButton" type="button" ng-click="addFilter(parameter, false)" value="Add Type"></td>
+                                <td>
+                                    <label ng-repeat="type in parameter.filters.type track by $index">
+                                        <input type="text" ng-model="type.text">
+                                    </label>
+                                </td>
+                            </tr>
+                        </td>
+                    </tr>
                 </table>
             </div>
         </div>
-
-
-
-
-
-         <div>
-             Parameters:
-             <div>
-                    <button type="button" ng-click="addParameter()">Add New...</button>
-             </div>
-             <div class="parameters-container">
-                <div class="parameter" ng-repeat="parameter in script.parameters track by $index">
-                    <div>
-                        <label>
-                            Type:
-                            <select ng-options="type for type in parameterTypes" ng-model="parameter.parameterType">
-                            </select>
-                        </label>
-                        <label>
-                            Id:
-                            <input ng-model="parameter.id"/>
-                        </label>
-                        <label>
-                            Name:
-                            <input ng-model="parameter.name"/>
-                        </label>
-                        <label ng-if="parameter.parameterType=='constant'">
-                            Data Type:
-                            <select ng-options="dt for dt in types" ng-model="parameter.dataType"/>
-                            </select>
-                        </label>
-                        <label ng-if="parameter.parameterType=='constant' && parameter.dataType=='number'">
-                            Precision:
-                            <input type="text" ng-model="parameter.precision"/>
-                            Scale:
-                            <input type="text" ng-model="parameter.scale"/>
-                        </label>
-
-                        <label ng-if="parameter.parameterType=='constant' || parameter.parameterType=='object'">
-                            Required:
-                            <input type="checkbox" ng-model="parameter.required">
-                            
-                            <div ng-if="parameter.parameterType=='constant' && parameter.dataType=='text'">
-                                <input type="button" value="Add Option" ng-click="addOption(parameter)">
-                                <div ng-repeat="option in parameter.option track by $index">
-                                    <input type="text" ng-model="option.text"/>
-                                </div>
-                            </div>
-                        </label>
-
-                        <label ng-if="parameter.parameterType=='sql'">
-                            <div>
-                                Sql:
-                                {{parameter.sql}}
-                            </div>
-                            <a class="blue-button" href="#" ng-click="openModalFor(parameter)">Edit sql ...</a>
-                            <!-- <div id="sqlEditorParameter"></div> -->
-                        </label>
-
-                        <label ng-if="parameter.parameterType=='object'">
-                            Artefact ID:
-                            <input ng-model="parameter.typeartifactid"/>
-                            View artifact ID:
-                            <input ng-model="parameter.rdoviewartifactid"/>
-                            Display Type:
-                            <input ng-model="parameter.displaytype"/>
-                            Artifact GUID
-                            <input ng-model="parameter.typeartifactguid"/>
-                            View Artifact GUID
-                            <input ng-model="parameter.rdoviewartifactguid"/>
-                        </label>
-
-                        <label ng-if="parameter.parameterType == 'field'">
-                            <input type="button" ng-click="addFilter(parameter, true)" value="Add Category">
-                            <label ng-repeat="category in parameter.filters.category track by $index">
-                                <input type="text" ng-model="category.text">
-                            </label>
-
-                            <input type="button" ng-click="addFilter(parameter, false)" value="Add Type">
-                            <label ng-repeat="type in parameter.filters.type track by $index">
-                                <input type="text" ng-model="type.text">
-                            </label>
-                        </label>
-                        
-                    </div>
-                </div>
-                <!-- {{script.parameters | json}} -->
-             </div>
-         </div>
 
         <div>
             <label>

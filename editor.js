@@ -27,19 +27,19 @@ angular.module('scriptApp', [])
         version: '',
         key: '',
         parameters: [
-            {id: 'initDate', name:'Initial Date', parameterType: 'constant', dataType: 'user', precision: '', required: true},
-            {id: 'endDate', name:'End Date', parameterType: 'constant', dataType: 'number', option: [
-                {text: '1'}, {text: '2'}
-            ], rdoviewartifactid: 123},
-            {id:'test3', name: 'Test3', parameterType: 'fields', filters: {
-                category: [
-                    {text: 3},
-                    {text: 0}
-                ],
-                type: [
-                    {text: 6},
-                ]
-            }}
+            // {id: 'initDate', name:'Initial Date', parameterType: 'constant', dataType: 'user', precision: '', required: true},
+            // {id: 'endDate', name:'End Date', parameterType: 'constant', dataType: 'number', option: [
+            //     {text: '1'}, {text: '2'}
+            // ], rdoviewartifactid: 123},
+            // {id:'test3', name: 'Test3', parameterType: 'fields', filters: {
+            //     category: [
+            //         {text: 3},
+            //         {text: 0}
+            //     ],
+            //     type: [
+            //         {text: 6},
+            //     ]
+            // }}
         ],
         action: { },
         security: { },
