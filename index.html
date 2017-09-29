@@ -39,12 +39,26 @@
                                 <label for="description">Description:</label>
                             </td>
                             <td><input type="text" id="description" ng-model="script.Description"></td>
+                            <td class="dynamicEditFieldNameRequired">
+                                <label for="key">Key:</label>
+                            </td>
+                            <td><input id="key" ng-model="script.key"></td>
+                        </tr>
+
+                        <tr>
+                            <td class="dynamicEditFieldNameRequired">
+                                <label for="version">Version:</label>
+                            </td>
+                            <td>
+                                <input id="version" type="text" ng-model="script.version">
+                            </td>
                             <td></td>
                             <td></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+
             <div class="cardSection">
                 <h2>Action </h2>
                 <table class="fieldTable">
@@ -212,47 +226,66 @@
                     </tr>
                 </table>
             </div>
+
+            <div class="cardSection">
+                <h2>Display </h2>
+                <table class="fieldTable">
+                    <tbody>
+                        <tr>
+                            <td class="dynamicEditFieldNameRequired">
+                                <label for="displayType">Type:</label>
+                            </td>
+                            <td>
+                                <select id="displayType" ng-options='dt for dt in displayTypes' ng-model="script.display.type"></select>
+                            </td>
+                            <td class="dynamicEditFieldNameRequired">
+                                <label for="settings">Settings:</label>
+                            </td>
+                            <td><input id="setttings" type="text" ng-model="script.display.settings.reporttitle"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="cardSection">
+                <h2 style="display: inline;">Security</h2>
+                <input style="float: right; margin-right: 5px;" class="ActionButton" type="button" ng-click="addAcl()" value="Add Acl">
+                <div style="clear: both;"></div>
+
+                <table class="fieldTable" ng-repeat="acl in script.security.acl track by $index" style="border-bottom: thin solid #c1c1c1;">
+                    <tbody>
+                        <tr>
+                            <td class="dynamicEditFieldNameRequired">
+                                <label for="aclId">Id:</label>
+                            </td>
+                            <td>
+                                <input id="aclId" type="text" ng-model="acl.id">
+                            </td>
+                            <td class="dynamicEditFieldNameRequired">
+                                <label for="aclArtID">Artifact ID:</label>
+                            </td>
+                            <td><input id="aclArtID" type="text" ng-model="acl.typeartifactid"></td>
+                        </tr>
+
+                        <tr>
+                            <td class="dynamicEditFieldNameRequired">
+                                <label for="aclArtGUID">Artifact GUID:</label>
+                            </td>
+                            <td>
+                                <input id="aclArtGUID" type="text" ng-model="acl.typeartifactguid">
+                            </td>
+                            <td class="dynamicEditFieldNameRequired">
+                                <label for="aclType">Type:</label>
+                            </td>
+                            <td>
+                                <select id="aclType" ng-options='dt for dt in aclTypes' ng-model="acl.type"></select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <div>
-            <label>
-                Key:
-                <input ng-model="script.key">
-            </label>
-        </div>
-
-        <div>
-            <label>
-                Display:
-                <select ng-options='dt for dt in displayTypes' ng-model="script.display.type"></select>
-                Settings:
-                <input type="text" ng-model="script.display.settings.reporttitle">
-            </label>
-        </div>
-
-        <div>
-            <label>
-                Version:
-                <input type="text" ng-model="script.version">
-            </label>
-        </div>
-
-        <div>
-            <label>
-                Security:
-                <input type="button" ng-click="addAcl()" value="Add Acl">
-                <div ng-repeat="acl in script.security.acl track by $index">
-                    Id:
-                    <input type="text" ng-model="acl.id">
-                    Artifact ID:
-                    <input type="text" ng-model="acl.typeartifactid">
-                    Artifact GUID:
-                    <input type="text" ng-model="acl.typeartifactguid">
-                    Type:
-                    <input type="text" ng-model="acl.type">
-                </div>
-            </label>
-        </div>
          <div style="margin-top: 20px">
              <button type="button" ng-click="write()">Write</button>
          </div>
