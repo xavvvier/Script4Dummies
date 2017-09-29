@@ -12,6 +12,40 @@
 <body ng-controller="scriptCtrl">
     <div id="sqlEditor" class="panel"></div>
     <div class="panel">
+        <fieldset>
+            <legend>Action: </legend>
+            <div>
+            <label>
+                Time out
+                <input type="text" ng-model="script.action.timeout">
+            </label>
+        </div>
+        <div>
+            <label>
+                Returns
+                <select ng-options="return for return in returns" ng-model="script.action.returns">
+                </select>
+            </label>
+        </div>
+        <div>
+            <label>
+                Display Warning
+                <input type="checkbox" ng-model="script.action.displaywarning">
+            </label>
+        </div>
+        <div>
+            <label>
+                Allow html tags in out sput
+                <input type="checkbox" ng-model="script.action.allowhtmltagsinoutput">
+            </label>
+        </div>
+        <div>
+            <label>
+                Name action
+                <input type="text" ng-model="script.action.name">
+            </label>
+        </div>
+        </fieldset>
         <div>
             <label>
                  Name:
@@ -30,6 +64,7 @@
                  <input ng-model="script.Category">
              </label>
          </div>
+
          <div>
              Parameters:
              <div>
@@ -108,9 +143,51 @@
                         
                     </div>
                 </div>
-                {{script.parameters | json}}
+                <!-- {{script.parameters | json}} -->
              </div>
          </div>
+
+        <div>
+            <label>
+                Key:
+                <input ng-model="script.key">
+            </label>
+        </div>
+
+        <div>
+            <label>
+                Display:
+                <select ng-options='dt for dt in displayTypes' ng-model="script.display.type"></select>
+                Settings:
+                <input type="text" ng-model="script.display.settings.reporttitle">
+            </label>
+        </div>
+
+        <div>
+            <label>
+                Version:
+                <input type="text" ng-model="script.version">
+            </label>
+        </div>
+
+        <div>
+            <label>
+                Security:
+                <input type="button" ng-click="addAcl()" value="Add Acl">
+                <div ng-repeat="acl in script.security.acl track by $index">
+                    Id:
+                    <input type="text" ng-model="acl.id">
+                    Artifact ID:
+                    <input type="text" ng-model="acl.typeartifactid">
+                    Artifact GUID:
+                    <input type="text" ng-model="acl.typeartifactguid">
+                    Type:
+                    <input type="text" ng-model="acl.type">
+                </div>
+            </label>
+        </div>
+        <!-- {{script.security.acl}} -->
+
          <div style="margin-top: 20px">
              <button type="button" ng-click="read()">Read</button>
              <button type="button" ng-click="write()">Write</button>
