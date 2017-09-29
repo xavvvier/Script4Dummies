@@ -45,6 +45,10 @@ angular.module('scriptApp', [])
         "MultiReflected",
         "Batch"
     ];
+    $scope.objectDisplayType = [
+        'singlepicker',
+        'multiplicker'
+    ];
 
     $scope.openModal = false;
     $scope.editingParameter = null;
@@ -145,8 +149,14 @@ angular.module('scriptApp', [])
     $scope.init = function() {
         editor.setTheme('ace/theme/sqlserver');
         editor.getSession().setMode("ace/mode/sqlserver");
+        var _thisEditor = editor;
         editor.getSession().on('change', function(e) {
-            console.log(e);
+            if(e.lines[0].split('#').length > 1) {
+                var arrayParameter = e.lines[0].split('#');
+                var parameter = "#" + arrayParameter[arrayParameter.length-2] + "#";
+                _thisEditor.find(e.lines[0]);
+                _thisEditor.replace(parameter);
+            }
         });
         parameterEditor.setTheme('ace/theme/sqlserver');
         parameterEditor.getSession().setMode("ace/mode/sqlserver");

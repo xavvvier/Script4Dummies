@@ -28,25 +28,25 @@
                                 <label for="name">Name:</label>
                             </td>
                             <td><input type="text" id="name" ng-model="script.Name"></td>
-                            <td class="dynamicEditFieldNameRequired">
+                            <td>
                                 <label for="category">Category:</label>
                             </td>
                             <td><input type="text" id="category" ng-model="script.Category"></td>
                         </tr>
 
                         <tr>
-                            <td class="dynamicEditFieldNameRequired">
+                            <td>
                                 <label for="description">Description:</label>
                             </td>
                             <td><input type="text" id="description" ng-model="script.Description"></td>
-                            <td class="dynamicEditFieldNameRequired">
+                            <td>
                                 <label for="key">Key:</label>
                             </td>
                             <td><input type="text" id="key" ng-model="script.key"></td>
                         </tr>
 
                         <tr>
-                            <td class="dynamicEditFieldNameRequired">
+                            <td>
                                 <label for="version">Version:</label>
                             </td>
                             <td>
@@ -72,8 +72,8 @@
                                     ng-options="return for return in returns" 
                                     ng-model="script.action.returns"></select>
                             </td>
-                            <td class="dynamicEditFieldNameRequired">
-                                <label for="timeout">Timeout:</label>
+                            <td>
+                                <label for="timeout">Timeout (sec):</label>
                             </td>
                             <td><input id="timeout" type="text" ng-model="script.action.timeout"></td>
                         </tr>
@@ -174,13 +174,13 @@
 
                                 <!-- start object-->
                                 <tr ng-if="parameter.parameterType=='object'">
-                                    <td class="dynamicEditFieldNameRequired">
+                                    <td>
                                         <label for="">Artifact ID: </label>
                                     </td>
                                     <td>
                                         <input type="text" ng-model="parameter.typeartifactid"/>
                                     </td>
-                                    <td class="dynamicEditFieldNameRequired">
+                                    <td>
                                         <label for="">View artifact ID: </label>
                                     </td>
                                     <td>
@@ -189,13 +189,13 @@
                                 </tr>
 
                                 <tr ng-if="parameter.parameterType=='object'">
-                                    <td class="dynamicEditFieldNameRequired">
+                                    <td>
                                         <label for="">Artifact GUID: </label>
                                     </td>
                                     <td>
                                         <input type="text" ng-model="parameter.typeartifactguid"/>
                                     </td>
-                                    <td class="dynamicEditFieldNameRequired">
+                                    <td>
                                         <label for="">View Artifact GUID: </label>
                                     </td>
                                     <td>
@@ -205,10 +205,10 @@
 
                                 <tr ng-if="parameter.parameterType=='object'">
                                     <td class="dynamicEditFieldNameRequired">
-                                        <label for="">Display Type: </label>
+                                        <label for="">Display Tddype: </label>
                                     </td>
                                     <td>
-                                        <input type="text" ng-model="parameter.displaytype"/>
+                                        <select ng-options="key as value for (key , value) in objectDisplayType" ng-model="parameter.displaytype"></select>
                                     </td>
                                     <td></td>
                                     <td></td>
@@ -255,7 +255,7 @@
                             <td>
                                 <select id="displayType" ng-options='dt for dt in displayTypes' ng-model="script.display.type"></select>
                             </td>
-                            <td class="dynamicEditFieldNameRequired">
+                            <td>
                                 <label for="settings">Settings:</label>
                             </td>
                             <td><input id="setttings" type="text" ng-model="script.display.settings.reporttitle"></td>
@@ -264,42 +264,45 @@
                 </table>
             </div>
 
-            <div class="cardSection">
+            <div id="_cardSecurity" class="cardSection">
                 <h2 style="display: inline;">Security</h2>
                 <input style="float: right; margin-right: 5px;" class="ActionButton" type="button" ng-click="addAcl()" value="Add Acl">
                 <div style="clear: both;"></div>
 
-                <table class="fieldTable" ng-repeat="acl in script.security.acl track by $index" style="border-bottom: thin solid #c1c1c1;">
-                    <tbody>
-                        <tr>
-                            <td class="dynamicEditFieldNameRequired">
-                                <label for="aclId">Id:</label>
-                            </td>
-                            <td>
-                                <input id="aclId" type="text" ng-model="acl.id">
-                            </td>
-                            <td class="dynamicEditFieldNameRequired">
-                                <label for="aclArtID">Artifact ID:</label>
-                            </td>
-                            <td><input id="aclArtID" type="text" ng-model="acl.typeartifactid"></td>
-                        </tr>
+                <div ng-repeat="acl in script.security.acl track by $index">
+                    <table class="fieldTable">
+                        <tbody>
+                            <tr>
+                                <td class="dynamicEditFieldNameRequired">
+                                    <label for="aclId">Id:</label>
+                                </td>
+                                <td>
+                                    <input id="aclId" type="text" ng-model="acl.id">
+                                </td>
+                                <td>
+                                    <label for="aclArtID">Artifact ID:</label>
+                                </td>
+                                <td><input id="aclArtID" type="text" ng-model="acl.typeartifactid"></td>
+                            </tr>
 
-                        <tr>
-                            <td class="dynamicEditFieldNameRequired">
-                                <label for="aclArtGUID">Artifact GUID:</label>
-                            </td>
-                            <td>
-                                <input id="aclArtGUID" type="text" ng-model="acl.typeartifactguid">
-                            </td>
-                            <td class="dynamicEditFieldNameRequired">
-                                <label for="aclType">Type:</label>
-                            </td>
-                            <td>
-                                <select id="aclType" ng-options='dt for dt in aclTypes' ng-model="acl.type"></select>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                            <tr>
+                                <td>
+                                    <label for="aclArtGUID">Artifact GUID:</label>
+                                </td>
+                                <td>
+                                    <input id="aclArtGUID" type="text" ng-model="acl.typeartifactguid">
+                                </td>
+                                <td class="dynamicEditFieldNameRequired">
+                                    <label for="aclType">Type:</label>
+                                </td>
+                                <td>
+                                    <select id="aclType" ng-options='dt for dt in aclTypes' ng-model="acl.type"></select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                </div>
             </div>
         </div>
 
