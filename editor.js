@@ -71,6 +71,7 @@ angular.module('scriptApp', [])
             case 'constant':
                 parameter.required = node.getAttribute('required');
                 parameter.dataType = node.getAttribute('type');
+                parameter.option = readOption(node);
                 break;
             case 'sql':
                 parameter.sql = nodeText(node);
@@ -80,9 +81,11 @@ angular.module('scriptApp', [])
                 break;
             case 'object':
                 parameter.required = node.getAttribute('required');
-                parameter.displaytype = node.getAttribute('displaytype');
                 parameter.typeartifactid = node.getAttribute('typeartifactid');
                 parameter.rdoviewartifactid = node.getAttribute('rdoviewartifactid');
+                parameter.displaytype = node.getAttribute('displaytype');
+                parameter.typeartifactguid = node.getAttribute('typeartifactguid');
+                parameter.rdoviewartifactguid = node.getAttribute('rdoviewartifactguid');
                 break;
         }
         return parameter;
@@ -107,6 +110,18 @@ angular.module('scriptApp', [])
             categories: categories,
             types: types
         };
+    }
+
+    function readOption(node){
+        if(node.children){
+            var values = [];
+            for (var i = 0, len = node.children.length; i < len; i++) {
+                var child = node.children[i];
+                values.push(nodeText(child));
+            }
+            return values;
+        }
+        return null;
     }
 
     function nodeText(node){
