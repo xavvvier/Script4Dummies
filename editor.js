@@ -75,7 +75,7 @@ angular.module('scriptApp', [])
     }
 
     $scope.read = function () {
-        var targetElement = document.getElementById('targetElement');
+		var targetElement = window.top.document.getElementsByClassName('script-body')[0];
         loadScript(targetElement, $scope.script);
     };
 
@@ -84,8 +84,9 @@ angular.module('scriptApp', [])
     };
 
     $scope.init = function() {
-        editor.setTheme("ace/theme/solarized_dark");
+        editor.setTheme('ace/theme/sqlserver');
         editor.getSession().setMode("ace/mode/sqlserver");
+        $scope.read();
     }
 
     $scope.init();
@@ -97,10 +98,16 @@ angular.module('scriptApp', [])
         xw.indentation = 2;//add 2 spaces per level
         xw.writeStartDocument();
         xw.writeStartElement( 'script' );
-        xw.writeComment('Create with Script4Dummies');
-        xw.writeElementString('name', script.Name);
-        xw.writeElementString('description', script.Description);
-        xw.writeElementString('category', script.Category);
+        xw.writeComment('Created with Script4Dummies');
+        if(script.Name){
+            xw.writeElementString('name', script.Name);
+        }
+        if(script.Description){
+            xw.writeElementString('description', script.Description);
+        }
+        if(script.Category){
+            xw.writeElementString('category', script.Category);
+        }
         if(script.key){
             xw.writeElementString('key', script.key);
         }
@@ -204,7 +211,7 @@ angular.module('scriptApp', [])
     }
 
     function loadScript(element, script){
-        var scriptDefinition = targetElement.value;
+        var scriptDefinition = element.value;
         var parser = new DOMParser();
         var xmlScript = parser.parseFromString(scriptDefinition, "text/xml");
         var scriptNode = xmlScript.firstChild;
