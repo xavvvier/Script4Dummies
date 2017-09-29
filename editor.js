@@ -6,15 +6,15 @@ angular.module('scriptApp', [])
     //var editorParameter = ace.edit("sqlEditorParameter");
 
     $scope.parameterTypes = ['constant', 'sql', 'field', 'search', 'searchprovider', 'object'];
-    $scope.types = ['Date', 'DateTime', 'Text', 'User', 'Number', 'TimeZone'];
+    $scope.types = ['date', 'datetime', 'text', 'user', 'number', 'timezone'];
 
     $scope.script = {
         Name: '',
         Description: '',
         Category: '',
         parameters: [
-            {id: 'initDate', name:'Initial Date', parameterType: 'constant', type: 'User', precision: '', required: true},
-            {id: 'endDate', name:'End Date', parameterType: 'constant', type: 'Number', option: [
+            {id: 'initDate', name:'Initial Date', parameterType: 'constant', dataType: 'user', precision: '', required: true},
+            {id: 'endDate', name:'End Date', parameterType: 'constant', dataType: 'number', option: [
                 {text: '1'}, {text: '2'}
             ], rdoviewartifactid: 123},
             {id:'test3', name: 'Test3', parameterType: 'fields', filters: {

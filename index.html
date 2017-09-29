@@ -53,10 +53,10 @@
                         </label>
                         <label ng-if="parameter.parameterType=='constant'">
                             Data Type:
-                            <select ng-options="dt for dt in types" ng-model="parameter.type"/>
+                            <select ng-options="dt for dt in types" ng-model="parameter.dataType"/>
                             </select>
                         </label>
-                        <label ng-if="parameter.parameterType=='constant' && parameter.type=='Number'">
+                        <label ng-if="parameter.parameterType=='constant' && parameter.dataType=='number'">
                             Precision:
                             <input type="text" ng-model="parameter.precision"/>
                             Scale:
@@ -67,7 +67,7 @@
                             Required:
                             <input type="checkbox" ng-model="parameter.required">
                             
-                            <div ng-if="parameter.parameterType=='constant'">
+                            <div ng-if="parameter.parameterType=='constant' && parameter.dataType=='text'">
                                 <input type="button" value="Add Option" ng-click="addOption(parameter)">
                                 <div ng-repeat="option in parameter.option track by $index">
                                     <input type="text" ng-model="option.text"/>
