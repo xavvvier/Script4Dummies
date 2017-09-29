@@ -92,9 +92,7 @@
                 <div>
                     <input type="checkbox" class="checkbox-value" id="displaywarning" ng-model="script.action.displaywarning">
                     <label for="displaywarning" class="no-bold">Display Warning</label>
-                </div>
-                <div>
-                    <input type="checkbox" class="checkbox-value" id="allowhtmltags" ng-model="script.action.allowhtmltagsinoutput">
+                    <input type="checkbox" style="margin-left: 147px;" class="checkbox-value" id="allowhtmltags" ng-model="script.action.allowhtmltagsinoutput">
                     <label for="allowhtmltags" class="no-bold">Allow html tags in output</label>
                 </div>
             </div>
@@ -104,9 +102,11 @@
                 <button style="float: right; margin-right: 5px;" class="ActionButton" type="button" ng-click="addParameter()">Add New</button>
                 <div style="clear: both;"></div>
                 <div ng-repeat="parameter in script.parameters track by $index">
-                    <div>
-                        <a href="#{{parameter.id}}#" ng-click="parameter.open = !parameter.open">...</a>
-                        <span>{{parameter.name}} <em>{{parameter.id}}</em></span>
+                    <div class="parameter-link" ng-click="parameter.open = !parameter.open">
+                        <a href="#{{parameter.id}}#">
+                            <img src="Drag-icon.png"/> 
+                        </a>
+                        <div>{{parameter.name}}</div>
                     </div>
                     <table class="fieldTable parameter-table" ng-if="parameter.open">
                         <tr>
@@ -307,7 +307,7 @@
         </div>
 
          <div style="margin-top: 20px">
-             <button type="button" ng-click="write()">Write</button>
+             <button type="button" ng-click="print()">Write</button>
          </div>
      </div>
      <div style="clear: both">

@@ -102,7 +102,7 @@ angular.module('scriptApp', [])
     };
 
     $scope.addParameter = function(){
-        $scope.script.parameters.push({});
+        $scope.script.parameters.push({open: true});
     };
 
     $scope.addOption = function (parameter) {
@@ -141,6 +141,10 @@ angular.module('scriptApp', [])
         var script = createXml($scope.script);
         return script;
     };
+
+    $scope.print= function(){
+        console.log($scope.write());
+    }
 
     $scope.init = function() {
         editor.setTheme('ace/theme/sqlserver');
