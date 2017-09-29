@@ -53,7 +53,7 @@ angular.module('scriptApp', [])
 
     $scope.openModalFor = function (parameter){
         $scope.editingParameter = parameter;
-        parameterEditor.setValue(parameter.sql);
+        parameterEditor.setValue(parameter.sql || '');
         parameterEditor.gotoLine(1);
         $scope.openModal =true;
     };
