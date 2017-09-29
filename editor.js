@@ -141,6 +141,9 @@ angular.module('scriptApp', [])
     $scope.init = function() {
         editor.setTheme('ace/theme/sqlserver');
         editor.getSession().setMode("ace/mode/sqlserver");
+        editor.getSession().on('change', function(e) {
+            console.log(e);
+        });
         parameterEditor.setTheme('ace/theme/sqlserver');
         parameterEditor.getSession().setMode("ace/mode/sqlserver");
         $scope.read();

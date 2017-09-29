@@ -105,7 +105,7 @@
                 <div style="clear: both;"></div>
                 <div ng-repeat="parameter in script.parameters track by $index">
                     <div>
-                        <a href="#" ng-click="parameter.open = !parameter.open">...</a>
+                        <a href="#{{parameter.id}}#" ng-click="parameter.open = !parameter.open">...</a>
                         <span>{{parameter.name}} <em>{{parameter.id}}</em></span>
                     </div>
                     <table class="fieldTable parameter-table" ng-if="parameter.open">
@@ -236,7 +236,7 @@
                             </td>
                         </tr>
                     </table>
-                    <br/>
+                    <br ng-if="parameter.open"/>
                 </div>
                 <div ng-if="parameter.parameterType=='constant' || parameter.parameterType=='object'">
                     <input type="checkbox" class="checkbox-value" ng-model="parameter.required">
