@@ -26,7 +26,8 @@ angular.module('scriptApp', [])
                     {text: 6},
                 ]
             }}
-        ]
+        ],
+        action: { }
     };
 
     $scope.addParameter = function(){
@@ -78,10 +79,8 @@ angular.module('scriptApp', [])
         xw.formatting = 'indented';//add indentation and newlines
         xw.indentChar = ' ';//indent with spaces
         xw.indentation = 2;//add 2 spaces per level
-
-        xw.writeStartDocument( );
+        xw.writeStartDocument();
         xw.writeStartElement( 'script' );
-
         xw.writeComment('Create with Script4Dummies');
         xw.writeElementString('name', script.Name);
         xw.writeElementString('description', script.Description);
@@ -93,13 +92,25 @@ angular.module('scriptApp', [])
             writeParameter(xw, parameter);
         }
         xw.writeEndElement();//input
+        xw.writeStartElement('action');
+        xw.writeAttributeString('returns', script.action.returns);
+        writeAttrIfNotNull(xw, 'timeout', script.action.timeout);
+        writeAttrIfNotNull(xw, 'displaywarning', script.action.displaywarning);
+        writeAttrIfNotNull(xw, 'allowhtmltagsinoutput', script.action.allowhtmltagsinoutput);
+        writeAttrIfNotNull(xw, 'name', script.action.name);
+        xw.writeCDATA(editor.getValue());
+        xw.writeEndElement(); //action
         xw.writeEndElement(); //script
         xw.writeEndDocument();
-
         var xml = xw.flush(); //generate the xml string
         console.log(xml);
     }
 
+    function writeAttrIfNotNull(xw, name, value) {
+        if(value!=null){
+            xw.writeAttributeString(name, value);
+        }
+    };
     function writeParameter(xw, parameter){
         xw.writeStartElement(parameter.parameterType);
         xw.writeAttributeString('id', parameter.id);
@@ -120,15 +131,26 @@ angular.module('scriptApp', [])
                 xw.writeCDATA(parameter.sql);
                 break;
             case 'field':
-                //parameter.filters = readFilters(node);
+                xw.writeStartElement('filters');
+                var types = parameter.filters.types;
+                for (var i = 0, len = types.length; i < len; i++) {
+                    xw.writeElementString('type', types[i].text);
+                }
+                var categories = parameter.filters.categories;
+                for (var i = 0, len = categories.length; i < len; i++) {
+                    xw.writeElementString('category', categories[i].text);
+                }
+                xw.writeEndElement();//filters
                 break;
             case 'object':
-                //parameter.required = node.getAttribute('required');
-                //parameter.typeartifactid = node.getAttribute('typeartifactid');
-                //parameter.rdoviewartifactid = node.getAttribute('rdoviewartifactid');
-                //parameter.displaytype = node.getAttribute('displaytype');
-                //parameter.typeartifactguid = node.getAttribute('typeartifactguid');
-                //parameter.rdoviewartifactguid = node.getAttribute('rdoviewartifactguid');
+                if(parameter.required!=null){
+                    xw.writeAttributeString('required', String(parameter.required));
+                }
+                writeAttrIfNotNull(xw, 'typeartifactid', parameter.typeartifactid);
+                writeAttrIfNotNull(xw, 'rdoviewartifactid', parameter.rdoviewartifactid);
+                writeAttrIfNotNull(xw, 'displaytype', parameter.displaytype);
+                writeAttrIfNotNull(xw, 'typeartifactguid', parameter.typeartifactguid);
+                writeAttrIfNotNull(xw, 'rdoviewartifactguid', parameter.rdoviewartifactguid);
                 break;
         }
         xw.writeEndElement();
@@ -139,12 +161,10 @@ angular.module('scriptApp', [])
         var parser = new DOMParser();
         var xmlScript = parser.parseFromString(scriptDefinition, "text/xml");
         var scriptNode = xmlScript.firstChild;
-
         //Script Basic Properties
         script.Name = nodeText(scriptNode.getElementsByTagName('name')[0]);
         script.Description = nodeText(scriptNode.getElementsByTagName('description')[0]);
         script.Category = nodeText(scriptNode.getElementsByTagName('category')[0]);
-
         //Script parameters
         var inputNode = xmlScript.getElementsByTagName('input')[0];
         var parameterNodes = inputNode.children;
@@ -156,6 +176,11 @@ angular.module('scriptApp', [])
         script.parameters = parameters;
         var actionNode = scriptNode.getElementsByTagName('action')[0];
         var sqlScript = actionNode.firstChild.wholeText;
+        script.action.returns = actionNode.getAttribute('returns');
+        script.action.timeout = actionNode.getAttribute('timeout');
+        script.action.displaywarning = actionNode.getAttribute('displaywarning');
+        script.action.allowhtmltagsinoutput = actionNode.getAttribute('allowhtmltagsinoutput');
+        script.action.name = actionNode.getAttribute('name');
         editor.setValue(sqlScript);
         editor.gotoLine(1);
     }
@@ -198,10 +223,10 @@ angular.module('scriptApp', [])
             var child = filtersNode.children[i];
             switch (child.nodeName) {
                 case 'type':
-                    types.push(nodeText(child));
+                    types.push({text: nodeText(child)});
                     break;
                 case 'category':
-                    categories.push(nodeText(child));
+                    categories.push({text: nodeText(child)});
                     break;
             }
         }
