@@ -107,20 +107,7 @@ angular.module('scriptApp', [])
             xw.writeAttributeString('reporttitle', script.display.settings.reporttitle);
             xw.writeEndElement();//settings
         }
-        if(script.security && script.security.acl && script.security.acl.length){
-            xw.writeStartElement('security');
-            var acls = script.security.acl;
-            for (var i = 0, len = acls.length; i < len; i++) {
-                var acl = acls[i];
-                xw.writeStartElement('acl');
-                writeAttrIfNotNull(xw, 'id', acl.id);
-                writeAttrIfNotNull(xw, 'typeartifactid', acl.typeartifactid);
-                writeAttrIfNotNull(xw, 'typeartifactguid', acl.typeartifactguid);
-                writeAttrIfNotNull(xw, 'type', acl.type);
-                xw.writeEndElement();//acl
-            }
-            xw.writeEndElement();//security
-        }
+        writeSecurity(xw, script.security);
         xw.writeEndElement();//display
         xw.writeStartElement('action');
         xw.writeAttributeString('returns', script.action.returns);
@@ -134,6 +121,23 @@ angular.module('scriptApp', [])
         xw.writeEndDocument();
         var xml = xw.flush(); //generate the xml string
         console.log(xml);
+    }
+
+    function writeSecurity(xw, security){
+        if(security && security.acl && security.acl.length){
+            xw.writeStartElement('security');
+            var acls = security.acl;
+            for (var i = 0, len = acls.length; i < len; i++) {
+                var acl = acls[i];
+                xw.writeStartElement('acl');
+                writeAttrIfNotNull(xw, 'id', acl.id);
+                writeAttrIfNotNull(xw, 'typeartifactid', acl.typeartifactid);
+                writeAttrIfNotNull(xw, 'typeartifactguid', acl.typeartifactguid);
+                writeAttrIfNotNull(xw, 'type', acl.type);
+                xw.writeEndElement();//acl
+            }
+            xw.writeEndElement();//security
+        }
     }
 
     function writeAttrIfNotNull(xw, name, value) {
