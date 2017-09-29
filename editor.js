@@ -44,7 +44,7 @@ angular.module('scriptApp', [])
     };
 
     $scope.addParameter = function(){
-        $scope.script.parameters.push();
+        $scope.script.parameters.push({});
     };
 
     $scope.addOption = function (parameter) {
