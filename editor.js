@@ -86,7 +86,7 @@ angular.module('scriptApp', [])
         ],
         action: { },
         security: { },
-        display: { }
+        display: { type: 'report'}
     };
 
     $scope.closeModal = function (){
@@ -172,7 +172,6 @@ angular.module('scriptApp', [])
         xw.indentation = 2;//add 2 spaces per level
         xw.writeStartDocument();
         xw.writeStartElement( 'script' );
-        xw.writeComment('Created with Script4Dummies');
         if(script.Name){
             xw.writeElementString('name', script.Name);
         }
@@ -194,15 +193,17 @@ angular.module('scriptApp', [])
             writeParameter(xw, parameter);
         }
         xw.writeEndElement();//input
-        xw.writeStartElement('display');
-        writeAttrIfNotNull(xw, 'type', script.display.type);
-        if(script.display.settings && script.display.settings.reporttitle){
-            xw.writeStartElement('settings');
-            xw.writeAttributeString('reporttitle', script.display.settings.reporttitle);
-            xw.writeEndElement();//settings
+        if(script.display && script.display.type){
+            xw.writeStartElement('display');
+            writeAttrIfNotNull(xw, 'type', script.display.type);
+            if(script.display.settings && script.display.settings.reporttitle){
+                xw.writeStartElement('settings');
+                xw.writeAttributeString('reporttitle', script.display.settings.reporttitle);
+                xw.writeEndElement();//settings
+            }
+            writeSecurity(xw, script.security);
+            xw.writeEndElement();//display
         }
-        writeSecurity(xw, script.security);
-        xw.writeEndElement();//display
         xw.writeStartElement('action');
         xw.writeAttributeString('returns', script.action.returns);
         writeAttrIfNotNull(xw, 'timeout', script.action.timeout);

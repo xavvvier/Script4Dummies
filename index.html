@@ -78,8 +78,8 @@
                             <td><input id="timeout" type="text" ng-model="script.action.timeout"></td>
                         </tr>
                         <tr>
-                            <td class="dynamicEditFieldNameRequired">
-                                <label for="actionname">Name action:</label>
+                            <td class="">
+                                <label for="actionname">Name:</label>
                             </td>
                             <td><input type="text" id="actionname" ng-model="script.action.name"></td>
                             <td></td>
@@ -306,11 +306,11 @@
             </div>
         </div>
 
-         <div style="margin-top: 20px">
+         <div style="display:none;margin-top: 20px">
              <button type="button" ng-click="print()">Write</button>
          </div>
      </div>
-     <div style="clear: both">
+     <div style="display: none">
          <textarea rows="20" cols="200" id="targetElement" class="script-body">
  &lt;script&gt;
 &lt;name&gt;My script&lt;/name&gt;
