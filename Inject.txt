@@ -1,8 +1,6 @@
-//Append the following span to #_scriptBodyHeader to D:\Program Files\kCura Corporation\Relativity\EDDS\Case\RelativityScript\Edit.aspx:
+// Add the following code before the closing tab </asp:panel>
+// in the file \Program Files\kCura Corporation\Relativity\EDDS\Case\RelativityScript\Edit.aspx
 
-<span class="dummy-question"> Are you a dummy?</span>
-
-//Add the following code before the closing tab </asp:panel>
 
 <style>
 .modal-context{
@@ -31,7 +29,7 @@ span.dummy-question{
 }
 .modal-container{
 	height: 800px; 
-	width: 1200px;
+	width: 1250px;
 	background-color: #f7f7f7;
 	margin: auto;
 	border-radius: 3px;
@@ -66,9 +64,14 @@ span.dummy-question{
 	</div>
 </div>
 <script language=javascript>
+  $(function(){
+    var txtarea = $('#_editTemplate__kCuraScrollingDiv__scriptText');
+	if(!txtarea.attr('disabled')){
+		$('#_editTemplate__kCuraScrollingDiv__scriptBodyHeader').append('<span class="dummy-question">Launch Editor ...</span>');
+	}
 	$('.dummy-question').click(function(){
 		$('#dummyWorld').show();
-		$('#script4DummiesModal').attr('src', '/Relativity/custompages/faaac71d-a1f7-4bf6-af82-cac6b085f9bf/index.html');
+		$('#script4DummiesModal').attr('src', '/Relativity/CustomPages/49a9acaf-6ddd-468f-9b1e-22f7b719bf65/index.html');
 	});
 	$('.dynamic-content-modal-close').click(function(){
 		var modalWindow = document.getElementById("script4DummiesModal").contentWindow;
@@ -76,4 +79,5 @@ span.dummy-question{
 		$('textarea.script-body').val(result);
 		$('#dummyWorld').hide();
 	});
+  });
 </script>
